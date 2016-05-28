@@ -1,2 +1,16 @@
 # geographic-center
-A Google App Engine web application that finds the geographic center of groups of people
+A Google App Engine/Angular 2 web application that finds the geographic center of groups of people
+
+## Build Prerequisites
+* JDK (I used 8, but 7 or even 6 should be fine)
+* Apache Maven
+* Node.js
+* npm
+* angular-cli
+
+## Production Deployment
+`cd ui`
+`npm install`
+`ng build -prod`
+`cd ../api`
+`mvn clean install appengine:update`
