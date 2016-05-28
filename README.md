@@ -9,8 +9,8 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
 * angular-cli
 
 ## Production Deployment
-`cd ui`
-`npm install`
-`ng build -prod`
-`cd ../api`
-`mvn clean install appengine:update`
+    cd ui
+    npm install
+    ng build -prod
+    cd ../api
+    mvn clean install appengine:update
