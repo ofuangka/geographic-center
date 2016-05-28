@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GeographicCenter</title>
+  <base href="/ui/">
+  {{#unless environment.production}}
+  <script src="/ember-cli-live-reload.js" type="text/javascript"></script>
+  {{/unless}}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <geographic-center-app>Loading...</geographic-center-app>
+  {{#each scripts.polyfills}}
+  <script src="{{.}}"></script>
+  {{/each}}
+  <script>
+    System.import('system-config.js').then(function importMain() {
+      System.import('main');
+    }).catch(console.error.bind(console));
+  </script>
+</body>
+</html>
