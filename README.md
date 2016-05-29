@@ -14,3 +14,10 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
     ng build -prod
     cd ../api
     mvn clean install appengine:update
+
+## To dos
+* Prevent mobile zoom
+* Set width of side nav
+* Update version of Angular Material
+    * Build for production
+* Figure out form validation
