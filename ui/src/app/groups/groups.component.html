@@ -1,3 +1,9 @@
-<md-card>
+<md-card *ngIf="!groups || groups.length === 0">
     <md-card-content>You currently have no groups :(</md-card-content>
 </md-card>
+<div class="card-container" *ngIf="groups && groups.length > 0">
+    <md-card *ngFor="let group of groups">
+        <md-card-title><a [routerLink]="['/groups', group.id]">{{group.name}}</a></md-card-title>
+        <md-card-subtitle>{{group.createdTs | date}}</md-card-subtitle>
+    </md-card>
+</div>

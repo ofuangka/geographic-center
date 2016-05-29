@@ -16,8 +16,9 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
     mvn clean install appengine:update
 
 ## To dos
-* Prevent mobile zoom
-* Set width of side nav
+* Add map directive
+* Improve styling
+* Move create group form into a dialog
 * Update version of Angular Material
     * Build for production
 * Figure out form validation

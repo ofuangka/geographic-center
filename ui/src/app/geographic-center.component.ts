@@ -11,6 +11,7 @@ import { COMMON_DIRECTIVES } from '@angular/common';
 import { Routes, Router, ROUTER_DIRECTIVES } from '@angular/router';
 import { GroupsComponent } from './groups/groups.component';
 import { AboutComponent } from './about/about.component';
+import { GroupDetailsComponent } from './group-details/group-details.component';
 
 @Component({
     moduleId: module.id,
@@ -33,6 +34,7 @@ import { AboutComponent } from './about/about.component';
     ]
 })
 @Routes([
+    {path: '/groups/:groupId', component: GroupDetailsComponent},
     {path: '/groups', component: GroupsComponent},
     {path: '/about', component: AboutComponent},
     {path: '*', component: GroupsComponent}
