@@ -1,3 +1,32 @@
-<h1>
-  {{title}}
-</h1>
+<md-sidenav-layout fullscreen>
+    <md-sidenav #sidenav>
+        <md-nav-list>
+            <a *ngFor="let view of views" md-list-item>
+                <md-icon md-list-icon>{{view.icon}}</md-icon>
+                <span md-line>{{view.name}}</span>
+                <span md-line class="secondary">{{view.description}}</span>
+            </a>
+            <md-divider></md-divider>
+            <a *ngIf="username" md-list-item>Signed in as {{username}}. Sign out</a>
+            <a *ngIf="!username" md-list-item>Getting user information...</a>
+        </md-nav-list>
+    </md-sidenav>
+    <md-toolbar color="primary">
+        <button class="md-icon-button" md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
+        <button md-fab (click)="formShowing=!formShowing"><md-icon>add</md-icon></button>
+    </md-toolbar>
+    <div class="form" *ngIf="formShowing">
+        <md-card>
+            <md-card-title>Create a new group</md-card-title>
+            <md-card-content>
+                <form #newGroup>
+                    <md-input placeholder="Name" #newGroupName maxLength="100" required="true"></md-input>
+                    <md-hint align="end">{{newGroupName.characterCount}} / 100 characters</md-hint>
+                </form>
+            </md-card-content>
+            <md-card-actions align="end">
+                <button md-raised-button color="accent">Save</button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</md-sidenav-layout>

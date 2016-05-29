@@ -14,9 +14,4 @@ describe('App: GeographicCenter', () => {
       inject([GeographicCenterAppComponent], (app: GeographicCenterAppComponent) => {
     expect(app).toBeTruthy();
   }));
-
-  it('should have as title \'geographic-center works!\'',
-      inject([GeographicCenterAppComponent], (app: GeographicCenterAppComponent) => {
-    expect(app.title).toEqual('geographic-center works!');
-  }));
 });
