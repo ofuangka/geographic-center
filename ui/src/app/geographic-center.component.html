@@ -1,14 +1,21 @@
 <md-sidenav-layout fullscreen>
     <md-sidenav #sidenav>
         <md-nav-list>
-            <a *ngFor="let view of views" md-list-item>
+            <a *ngFor="let view of views" md-list-item (click)="showView(view.path); sidenav.close()">
                 <md-icon md-list-icon>{{view.icon}}</md-icon>
                 <span md-line>{{view.name}}</span>
                 <span md-line class="secondary">{{view.description}}</span>
             </a>
             <md-divider></md-divider>
-            <a *ngIf="username" md-list-item>Signed in as {{username}}. Sign out</a>
-            <a *ngIf="!username" md-list-item>Getting user information...</a>
+            <a *ngIf="!username" md-list-item>
+                <md-icon md-list-icon>settings_power</md-icon>
+                <span md-line class="secondary">Getting user information...</span>
+            </a>
+            <a *ngIf="username" md-list-item>
+                <md-icon md-list-icon>power</md-icon>
+                <span md-line class="secondary">Signed in as {{username}}</span>
+                <span md-line>Sign out</span>
+            </a>
         </md-nav-list>
     </md-sidenav>
     <md-toolbar color="primary">
@@ -29,4 +36,5 @@
             </md-card-actions>
         </md-card>
     </div>
+    <router-outlet></router-outlet>
 </md-sidenav-layout>

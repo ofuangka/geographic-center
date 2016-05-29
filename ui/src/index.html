@@ -1,22 +1,24 @@
 <!doctype html>
 <html>
+
 <head>
-  <meta charset="utf-8"/>
-  <title>GeographicCenter</title>
-  <base href="/ui/"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <meta charset="utf-8" />
+    <title>Geographic Center</title>
+    <base href="/ui/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 
 <body>
-  <geographic-center-app>Loading...</geographic-center-app>
-  {{#each scripts.polyfills}}
-  <script src="{{.}}"></script>
-  {{/each}}
-  <script>
-    System.import('system-config.js').then(function importMain() {
+    <geographic-center-app>Loading...</geographic-center-app>
+    {{#each scripts.polyfills}}
+    <script src="{{.}}"></script>
+    {{/each}}
+    <script>
+        System.import('system-config.js').then(function importMain() {
       System.import('main');
     }).catch(console.error.bind(console));
-  </script>
+    </script>
 </body>
+
 </html>
