@@ -1,6 +1,8 @@
 <md-card>
     <md-card-title>{{group.name}}</md-card-title>
-    <md-card-content></md-card-content>
+    <md-card-content>
+        <div id="map"></div>
+    </md-card-content>
 </md-card>
 <md-card>
     <md-card-content>
@@ -10,7 +12,7 @@
         <md-list *ngIf="members && members.length > 0">
             <md-list-item *ngFor="let member of members">
                 <md-slide-toggle [(ngModel)]="enabledMembers[member.id]"></md-slide-toggle>
-                <strong>{{member.name}}</strong> ({{member.lat}}, {{member.lng}}) as of {{member.lastUpdatedTs | date}}
+                <strong>{{member.name}}</strong>: ({{member.lat}}, {{member.lng}}, {{member.lastUpdatedTs | date}})
             </md-list-item>
         </md-list>
     </md-card-content>

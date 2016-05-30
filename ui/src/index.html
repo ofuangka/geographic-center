@@ -14,6 +14,8 @@
     {{#each scripts.polyfills}}
     <script src="{{.}}"></script>
     {{/each}}
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAezrDJ9rdCLvzuq1DYSRFKW5Sz8NuKJEg"></script>
     <script>
         System.import('system-config.js').then(function importMain() {
       System.import('main');

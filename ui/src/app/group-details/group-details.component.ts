@@ -3,6 +3,7 @@ import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MD_SLIDE_TOGGLE_DIRECTIVES } from '@angular2-material/slide-toggle';
+import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 @Component({
     moduleId: module.id,
@@ -13,7 +14,8 @@ import { MD_SLIDE_TOGGLE_DIRECTIVES } from '@angular2-material/slide-toggle';
         MD_CARD_DIRECTIVES,
         MD_LIST_DIRECTIVES,
         MD_PROGRESS_CIRCLE_DIRECTIVES,
-        MD_SLIDE_TOGGLE_DIRECTIVES
+        MD_SLIDE_TOGGLE_DIRECTIVES,
+        MD_ICON_DIRECTIVES
     ]
 })
 export class GroupDetailsComponent implements OnInit {
