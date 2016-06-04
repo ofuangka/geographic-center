@@ -17,6 +17,8 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
 
 ## To dos
 * Add map directive
+* Display error when geolocation not enabled
 * Improve styling
 * Move create group form into a dialog
 * Figure out form validation
+* Add better favicon
