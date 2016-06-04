@@ -26,7 +26,12 @@ export class GroupDetailsComponent implements OnInit {
         { id: '1', name: 'ofuangka', lat: 1.1, lng: 1.2, lastUpdatedTs: (new Date()).getTime() }
     ];
     enabledMembers: Object = { '1': true };
+    map: google.maps.Map;
     constructor() { }
     ngOnInit() {
+        this.map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644 },
+            zoom: 8
+        });
     }
 }

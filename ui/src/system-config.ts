@@ -7,8 +7,7 @@ const map: any = {
 };
 
 /** User packages configuration. */
-const packages: any = {
-};
+const packages: any = {};
 const materialPkgs: string[] = [
   'core', 
   'button', 
@@ -49,6 +48,7 @@ const barrels: string[] = [
   'app/groups',
   'app/about',
   'app/group-details',
+  'app/map',
   /** @cli-barrel */
 ];
 
