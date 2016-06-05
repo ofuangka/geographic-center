@@ -5,6 +5,7 @@ import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circl
 import { MD_SLIDE_TOGGLE_DIRECTIVES } from '@angular2-material/slide-toggle';
 import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 import { GroupMember } from './group-member';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
     moduleId: module.id,
@@ -31,17 +32,19 @@ export class GroupDetailsComponent implements OnInit {
     enabledMembers = {};
     map: google.maps.Map;
     bounds = new google.maps.LatLngBounds();
+    decimalFormat = '1.4-4';
     constructor() { }
     ngOnInit() {
-        
+
         /* all members should be enabled initially */
         this.members.forEach(member => {
             this.enabledMembers[member.id] = true;
         });
-        
+
         this.drawMap();
     }
     drawMap() {
+        let center = { lat: 0, lng: 0 }, count = 0, london = { lat: 51.5074, lng: 0.1278 }, formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat);
         this.map = new google.maps.Map(document.getElementById('map'));
         this.members.filter(member => this.enabledMembers[member.id]).forEach(member => {
 
@@ -50,8 +53,33 @@ export class GroupDetailsComponent implements OnInit {
                 position: new google.maps.LatLng(member.lat, member.lng),
                 map: this.map,
                 label: member.name
-            }).getPosition())
+            }).getPosition());
+
+            center.lat += member.lat;
+            center.lng += member.lng;
+            count++;
         });
-        this.map.fitBounds(this.bounds);
+
+        /* add the center marker */
+        if (count > 0) {
+            center.lat = center.lat / count;
+            center.lng = center.lng / count;
+
+            /* add the info window */
+            new google.maps.InfoWindow({
+                content: `<h3>Geographic Center</h3><p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>`
+            }).open(this.map,
+                new google.maps.Marker({
+                    position: new google.maps.LatLng(center.lat, center.lng),
+                    map: this.map,
+                    animation: google.maps.Animation.DROP
+                }));
+            this.map.fitBounds(this.bounds);
+        } else {
+
+            /* set some default center */
+            this.map.setCenter(new google.maps.LatLng(london.lat, london.lng));
+            this.map.setZoom(7);
+        }
     }
 }

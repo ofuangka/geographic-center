@@ -8,7 +8,8 @@
         <md-list dense *ngIf="members && members.length > 0">
             <md-list-item *ngFor="let member of members">
                 <md-slide-toggle [(ngModel)]="enabledMembers[member.id]" (change)="drawMap()"></md-slide-toggle>
-                <strong>{{member.name}}</strong> @ ({{member.lat}}, {{member.lng}}) {{member.lastUpdatedTs | date}}
+                <span md-line><strong>{{member.name}}</strong></span>
+                <span md-line>({{member.lat | number : decimalFormat}}, {{member.lng | number : decimalFormat}}) @ {{member.lastUpdatedTs | date}}</span>
             </md-list-item>
         </md-list>
     </md-card-content>
