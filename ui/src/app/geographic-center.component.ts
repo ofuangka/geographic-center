@@ -60,7 +60,7 @@ export class GeographicCenterAppComponent implements OnInit {
         private locationService: LocationService) { }
     ngOnInit() {
         this.securityService.getUserInfo().then((userInfo: UserInfo) => this.username = userInfo.username);
-        this.locationService.getCurrentPosition().then(null, this.handleLocationFailure);
+        this.locationService.getCurrentPosition().then(null, this.handleLocationFailure.bind(this));
     }
     showView(view: string) {
         this.router.navigate([view]);
