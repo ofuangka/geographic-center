@@ -41,7 +41,7 @@ export class GroupDetailsComponent implements OnInit {
     bounds = new google.maps.LatLngBounds();
     decimalFormat = '1.4-4';
     isLoading = true;
-    isSendingLocation = false;
+    isSendingLocation = true;
     constructor(private groupService: GroupService,
         private routeSegment: RouteSegment,
         private groupMemberService: GroupMemberService,
@@ -75,6 +75,8 @@ export class GroupDetailsComponent implements OnInit {
                 }
                 if (!isMember) {
                     this.sendLocation();
+                } else {
+                    this.isSendingLocation = false;
                 }
             });
 
