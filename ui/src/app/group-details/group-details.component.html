@@ -10,7 +10,7 @@
         </div>
         <div id="map"></div>
         <div class="actions-container" *ngIf="!isLoading">
-            <button md-raised-button color="primary" click="sendLocation()">Resend my location</button>
+            <button md-raised-button color="primary" (click)="sendLocation()" [disabled]="isSendingLocation">Resend my location</button>
         </div>
         <md-list dense *ngIf="members && members.length > 0">
             <md-list-item *ngFor="let member of members">

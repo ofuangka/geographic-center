@@ -19,6 +19,9 @@
         <button class="md-icon-button" md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
         <button md-fab (click)="formShowing=!formShowing"><md-icon>add</md-icon></button>
     </md-toolbar>
+    <md-toolbar color="warn" *ngIf="locationNotAvailable">
+        <small>Warning: Unable to retrieve location</small>
+    </md-toolbar>
     <div class="form" *ngIf="formShowing">
         <md-card>
             <md-card-title>Create a new group</md-card-title>
@@ -27,7 +30,7 @@
                     <md-input placeholder="Name" #newGroupName maxLength="100" required="true"></md-input>
                     <md-hint align="end">{{newGroupName.characterCount}} / 100 characters</md-hint>
                 </form>
-                <button md-raised-button class="pull-right" color="accent" (click)="createGroup()" [disabled]="newGroupName.empty">Save</button>
+                <button md-raised-button class="pull-right" color="accent" (click)="createGroup()" [disabled]="newGroupName.empty || isCreatingGroup">Save</button>
             </md-card-content>
         </md-card>
     </div>

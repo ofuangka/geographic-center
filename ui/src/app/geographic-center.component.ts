@@ -15,6 +15,7 @@ import { GroupDetailsComponent } from './group-details/group-details.component';
 import { SecurityService } from './security.service';
 import { UserInfo } from './user-info';
 import { GroupService } from './group.service';
+import { LocationService } from './location.service';
 
 @Component({
     moduleId: module.id,
@@ -35,7 +36,8 @@ import { GroupService } from './group.service';
     providers: [
         MdIconRegistry,
         SecurityService,
-        GroupService
+        GroupService,
+        LocationService
     ]
 })
 @Routes([
@@ -50,12 +52,33 @@ export class GeographicCenterAppComponent implements OnInit {
     ];
     formShowing = false;
     username: string;
-    constructor(private router: Router, private securityService: SecurityService) { }
+    locationNotAvailable = false;
+    isCreatingGroup = false;
+    constructor(private router: Router,
+        private securityService: SecurityService,
+        private groupService: GroupService,
+        private locationService: LocationService) { }
     ngOnInit() {
         this.securityService.getUserInfo().then((userInfo: UserInfo) => this.username = userInfo.username);
+        this.locationService.getCurrentPosition().then(null, this.handleLocationFailure);
     }
     showView(view: string) {
         this.router.navigate([view]);
     }
-    createGroup() {}
+    createGroup() {
+        this.isCreatingGroup = true;
+        this.locationService.getCurrentPosition().then((coords) => {
+            this.groupService.save("", coords.latitude, coords.longitude).then((group) => {
+                this.isCreatingGroup = false;
+                this.formShowing = false;
+                this.router.navigate(['/groups', group.id]);
+            }, this.handleSaveFailure);
+        }, this.handleLocationFailure);
+    }
+    handleSaveFailure() {
+
+    }
+    handleLocationFailure(reason) {
+        this.locationNotAvailable = true;
+    }
 }

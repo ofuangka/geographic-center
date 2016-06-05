@@ -12,6 +12,7 @@ import { GroupService } from '../group.service';
 import { RouteSegment } from '@angular/router';
 import { GroupMemberService } from '../group-member.service';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
+import { LocationService } from '../location.service';
 
 @Component({
     moduleId: module.id,
@@ -37,7 +38,11 @@ export class GroupDetailsComponent implements OnInit {
     bounds = new google.maps.LatLngBounds();
     decimalFormat = '1.4-4';
     isLoading = true;
-    constructor(private groupService: GroupService, private routeSegment: RouteSegment, private groupMemberService: GroupMemberService) { }
+    isSendingLocation = false;
+    constructor(private groupService: GroupService,
+        private routeSegment: RouteSegment,
+        private groupMemberService: GroupMemberService,
+        private locationService: LocationService) { }
     ngOnInit() {
         let groupId = this.routeSegment.getParam('groupId');
 
@@ -100,8 +105,24 @@ export class GroupDetailsComponent implements OnInit {
         }
     }
     sendLocation() {
-        window.navigator.geolocation.getCurrentPosition((position) => {
-            
-        });
+        this.isSendingLocation = true;
+        this.locationService.getCurrentPosition().then(coords => {
+            let groupId = this.routeSegment.getParam('groupId');
+            this.groupMemberService.updatePosition(groupId, coords.latitude, coords.longitude).then(() => this.isSendingLocation = false, this.handleUpdateFailure);
+        }, this.handlePositionFailure);
+    }
+    handlePositionFailure(reason) {
+
+    }
+    handleUpdateFailure() {
+        
+    }
+    onMessageReceived(newValue: GroupMember) {
+        for (let i = 0, len = this.members.length; i < len; i++) {
+            if (this.members[i].id === newValue.id) {
+                this.members.splice(i, 1, newValue);
+                break;
+            }
+        }
     }
 }

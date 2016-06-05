@@ -9,6 +9,10 @@ export class GroupMemberService {
     list(groupId: string) {
         return new Promise<GroupMember[]>(resolve => setTimeout(() => resolve(MEMBERS), 3000));
     }
+    
+    updatePosition(groupId: string, lat: number, lng: number) {
+        return new Promise(resolve => setTimeout(() => resolve(), 1000));
+    }
 
 }
 var MEMBERS: GroupMember[] = [
