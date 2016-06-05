@@ -13,6 +13,9 @@ import { RouteSegment } from '@angular/router';
 import { GroupMemberService } from '../group-member.service';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { LocationService } from '../location.service';
+import { UserInfoService } from '../user-info.service';
+import { UserInfo } from '../user-info';
+import { NotificationService } from '../notification.service';
 
 @Component({
     moduleId: module.id,
@@ -42,7 +45,9 @@ export class GroupDetailsComponent implements OnInit {
     constructor(private groupService: GroupService,
         private routeSegment: RouteSegment,
         private groupMemberService: GroupMemberService,
-        private locationService: LocationService) { }
+        private locationService: LocationService,
+        private userInfoService: UserInfoService,
+        private notificationService: NotificationService) { }
     ngOnInit() {
         let groupId = this.routeSegment.getParam('groupId');
 
@@ -58,10 +63,25 @@ export class GroupDetailsComponent implements OnInit {
 
             this.drawMap();
             this.isLoading = false;
+
+            /* add self if not a member */
+            this.userInfoService.read().then(userInfo => {
+                let isMember = false;
+                for (let i = 0, len = this.members.length; i < len; i++) {
+                    if (userInfo.id === this.members[i].userId) {
+                        isMember = true;
+                        break;
+                    }
+                }
+                if (!isMember) {
+                    this.sendLocation();
+                }
+            });
+
         });
     }
     drawMap() {
-        let center = { lat: 0, lng: 0 }, count = 0, london = { lat: 51.5074, lng: 0.1278 }, formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat);
+        let center = { lat: 0, lng: 0 }, count = 0, london = { lat: 51.5074, lng: 0.1278, zoom: 7 }, formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat);
         this.map = new google.maps.Map(document.getElementById('map'), {
             mapTypeControlOptions: {
                 mapTypeIds: []
@@ -101,26 +121,36 @@ export class GroupDetailsComponent implements OnInit {
 
             /* set some default center */
             this.map.setCenter(new google.maps.LatLng(london.lat, london.lng));
-            this.map.setZoom(7);
+            this.map.setZoom(london.zoom);
         }
     }
     sendLocation() {
         this.isSendingLocation = true;
         this.locationService.getCurrentPosition().then(coords => {
+            this.notificationService.clear();
             let groupId = this.routeSegment.getParam('groupId');
-            this.groupMemberService.updatePosition(groupId, coords.latitude, coords.longitude).then(() => this.isSendingLocation = false, this.handleUpdateFailure);
-        }, this.handlePositionFailure);
+            this.groupMemberService.updatePosition(groupId, coords.latitude, coords.longitude).then(
+                () => this.isSendingLocation = false,
+                this.handleUpdateFailure.bind(this));
+        }, this.handlePositionFailure.bind(this));
     }
     handlePositionFailure(reason) {
-
+        this.isSendingLocation = false;
+        this.notificationService.notify('Warning: Could not determine location');
     }
     handleUpdateFailure() {
-        
+        this.isSendingLocation = false;
+        this.notificationService.notify('Warning: Could not save location');
     }
     onMessageReceived(newValue: GroupMember) {
         for (let i = 0, len = this.members.length; i < len; i++) {
             if (this.members[i].id === newValue.id) {
                 this.members.splice(i, 1, newValue);
+
+                /* make sure to enable new members by default */
+                if (!this.enabledMembers.hasOwnProperty(newValue.id)) {
+                    this.enabledMembers[newValue.id] = true;
+                }
                 break;
             }
         }

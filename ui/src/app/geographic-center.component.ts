@@ -12,10 +12,12 @@ import { Routes, Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/ro
 import { GroupsComponent } from './groups/groups.component';
 import { AboutComponent } from './about/about.component';
 import { GroupDetailsComponent } from './group-details/group-details.component';
-import { SecurityService } from './security.service';
+import { UserInfoService } from './user-info.service';
 import { UserInfo } from './user-info';
 import { GroupService } from './group.service';
 import { LocationService } from './location.service';
+import { Notifee } from './notifee';
+import { NotificationService } from './notification.service';
 
 @Component({
     moduleId: module.id,
@@ -35,9 +37,10 @@ import { LocationService } from './location.service';
     ],
     providers: [
         MdIconRegistry,
-        SecurityService,
+        UserInfoService,
         GroupService,
-        LocationService
+        LocationService,
+        NotificationService
     ]
 })
 @Routes([
@@ -45,21 +48,23 @@ import { LocationService } from './location.service';
     { path: '/groups', component: GroupsComponent },
     { path: '/', component: AboutComponent }
 ])
-export class GeographicCenterAppComponent implements OnInit {
+export class GeographicCenterAppComponent implements OnInit, Notifee {
     views: Object[] = [
         { name: 'Groups', description: 'View your group history', icon: 'group', path: '/groups' },
         { name: 'About', description: 'About Geographic Center', icon: 'help', path: '/' }
     ];
     formShowing = false;
     username: string;
-    locationNotAvailable = false;
     isCreatingGroup = false;
+    notification: string;
     constructor(private router: Router,
-        private securityService: SecurityService,
+        private userInfoService: UserInfoService,
         private groupService: GroupService,
-        private locationService: LocationService) { }
+        private locationService: LocationService,
+        private notificationService: NotificationService) { }
     ngOnInit() {
-        this.securityService.getUserInfo().then((userInfo: UserInfo) => this.username = userInfo.username);
+        this.notificationService.subscribe(this);
+        this.userInfoService.read().then((userInfo: UserInfo) => this.username = userInfo.username);
         this.locationService.getCurrentPosition().then(null, this.handleLocationFailure.bind(this));
     }
     showView(view: string) {
@@ -67,18 +72,19 @@ export class GeographicCenterAppComponent implements OnInit {
     }
     createGroup() {
         this.isCreatingGroup = true;
-        this.locationService.getCurrentPosition().then((coords) => {
-            this.groupService.save("", coords.latitude, coords.longitude).then((group) => {
-                this.isCreatingGroup = false;
-                this.formShowing = false;
-                this.router.navigate(['/groups', group.id]);
-            }, this.handleSaveFailure);
-        }, this.handleLocationFailure);
+        this.groupService.save('').then((group) => {
+            this.isCreatingGroup = false;
+            this.formShowing = false;
+            this.router.navigate(['/groups', group.id]);
+        }, this.handleSaveFailure);
     }
     handleSaveFailure() {
 
     }
     handleLocationFailure(reason) {
-        this.locationNotAvailable = true;
+        this.notification = 'Warning: Could not determine location';
+    }
+    notify(message: string) {
+        this.notification = message;
     }
 }

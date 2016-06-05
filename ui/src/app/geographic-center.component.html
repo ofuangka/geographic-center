@@ -19,8 +19,8 @@
         <button class="md-icon-button" md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
         <button md-fab (click)="formShowing=!formShowing"><md-icon>add</md-icon></button>
     </md-toolbar>
-    <md-toolbar color="warn" *ngIf="locationNotAvailable">
-        <small>Warning: Unable to retrieve location</small>
+    <md-toolbar color="warn" *ngIf="notification">
+        <small>{{notification}}</small>
     </md-toolbar>
     <div class="form" *ngIf="formShowing">
         <md-card>

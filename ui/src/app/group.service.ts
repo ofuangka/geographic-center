@@ -20,7 +20,7 @@ export class GroupService {
             resolve(ret);
         }, 3000));
     }
-    save(groupName: string, lat: number, lng: number) {
+    save(groupName: string) {
         return new Promise<Group>(resolve => setTimeout(() => resolve(GROUPS[0]), 1000));
     }
 }
