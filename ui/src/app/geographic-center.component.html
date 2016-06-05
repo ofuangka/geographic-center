@@ -7,14 +7,11 @@
                 <span md-line class="secondary">{{view.description}}</span>
             </a>
             <md-divider></md-divider>
-            <a *ngIf="!username" md-list-item>
-                <md-icon md-list-icon>settings_power</md-icon>
-                <span md-line class="secondary">Getting user information...</span>
-            </a>
-            <a *ngIf="username" md-list-item>
-                <md-icon md-list-icon>power</md-icon>
-                <span md-line class="secondary">Signed in as {{username}}</span>
+            <a md-list-item>
+                <md-icon md-list-icon>power_settings_new</md-icon>
                 <span md-line>Sign out</span>
+                <span md-line class="secondary" *ngIf="!username">...</span>
+                <span md-line class="secondary" *ngIf="username">Signed in as {{username}}</span>
             </a>
         </md-nav-list>
     </md-sidenav>
@@ -26,14 +23,12 @@
         <md-card>
             <md-card-title>Create a new group</md-card-title>
             <md-card-content>
-                <form #newGroup>
+                <form #newGroupForm>
                     <md-input placeholder="Name" #newGroupName maxLength="100" required="true"></md-input>
                     <md-hint align="end">{{newGroupName.characterCount}} / 100 characters</md-hint>
                 </form>
+                <button md-raised-button class="pull-right" color="accent" (click)="createGroup()" [disabled]="newGroupName.empty">Save</button>
             </md-card-content>
-            <md-card-actions align="end">
-                <button md-raised-button color="accent">Save</button>
-            </md-card-actions>
         </md-card>
     </div>
     <router-outlet></router-outlet>

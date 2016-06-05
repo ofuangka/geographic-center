@@ -1,9 +1,16 @@
 <md-card>
-    <md-card-title>{{group.name}}</md-card-title>
+    <md-card-title>
+        <a routerLink="/groups">Groups</a> &raquo;
+        <span *ngIf="!group">...</span>
+        <span *ngIf="group">{{group.name}}</span>
+    </md-card-title>
     <md-card-content>
-        <div id="map"></div>
-        <div class="spinner-container" *ngIf="!members || members.length === 0">
+        <div class="spinner-container" *ngIf="isLoading">
             <md-spinner></md-spinner>
+        </div>
+        <div id="map"></div>
+        <div class="actions-container" *ngIf="!isLoading">
+            <button md-raised-button color="primary" click="sendLocation()">Resend my location</button>
         </div>
         <md-list dense *ngIf="members && members.length > 0">
             <md-list-item *ngFor="let member of members">

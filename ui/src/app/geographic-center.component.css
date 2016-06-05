@@ -30,3 +30,7 @@ md-input {
 .form md-card {
   flex-grow: 1;
 }
+
+.pull-right {
+  float: right;
+}

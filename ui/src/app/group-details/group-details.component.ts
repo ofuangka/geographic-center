@@ -4,8 +4,14 @@ import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MD_SLIDE_TOGGLE_DIRECTIVES } from '@angular2-material/slide-toggle';
 import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
-import { GroupMember } from './group-member';
+import { GroupMember } from '../group-member';
 import { DecimalPipe } from '@angular/common';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Group } from '../group';
+import { GroupService } from '../group.service';
+import { RouteSegment } from '@angular/router';
+import { GroupMemberService } from '../group-member.service';
+import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 
 @Component({
     moduleId: module.id,
@@ -17,35 +23,46 @@ import { DecimalPipe } from '@angular/common';
         MD_LIST_DIRECTIVES,
         MD_PROGRESS_CIRCLE_DIRECTIVES,
         MD_SLIDE_TOGGLE_DIRECTIVES,
-        MD_ICON_DIRECTIVES
-    ]
+        MD_ICON_DIRECTIVES,
+        ROUTER_DIRECTIVES,
+        MD_BUTTON_DIRECTIVES
+    ],
+    providers: [GroupMemberService]
 })
 export class GroupDetailsComponent implements OnInit {
-    group = {
-        name: 'Ultimate group'
-    };
-    members: GroupMember[] = [
-        { id: '1', name: 'ofuangka', lat: 1.1, lng: 1.2, lastUpdatedTs: new Date().getTime() },
-        { id: '2', name: 'tracylvalenzuela', lat: 2.2, lng: 2.4, lastUpdatedTs: new Date().getTime() },
-        { id: '3', name: 'forrestjacobs', lat: 1.2, lng: 1.2, lastUpdatedTs: new Date().getTime() }
-    ];
+    group: Group;
+    members: GroupMember[];
     enabledMembers = {};
     map: google.maps.Map;
     bounds = new google.maps.LatLngBounds();
     decimalFormat = '1.4-4';
-    constructor() { }
+    isLoading = true;
+    constructor(private groupService: GroupService, private routeSegment: RouteSegment, private groupMemberService: GroupMemberService) { }
     ngOnInit() {
+        let groupId = this.routeSegment.getParam('groupId');
 
-        /* all members should be enabled initially */
-        this.members.forEach(member => {
-            this.enabledMembers[member.id] = true;
+        this.groupService.read(groupId).then(group => this.group = group);
+
+        this.groupMemberService.list(groupId).then(members => {
+            this.members = members;
+
+            /* all members should be enabled initially */
+            this.members.forEach(member => {
+                this.enabledMembers[member.id] = true;
+            });
+
+            this.drawMap();
+            this.isLoading = false;
         });
-
-        this.drawMap();
     }
     drawMap() {
         let center = { lat: 0, lng: 0 }, count = 0, london = { lat: 51.5074, lng: 0.1278 }, formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat);
-        this.map = new google.maps.Map(document.getElementById('map'));
+        this.map = new google.maps.Map(document.getElementById('map'), {
+            mapTypeControlOptions: {
+                mapTypeIds: []
+            },
+            streetViewControl: false
+        });
         this.members.filter(member => this.enabledMembers[member.id]).forEach(member => {
 
             /* draw the Marker and include it in the bounds */
@@ -81,5 +98,10 @@ export class GroupDetailsComponent implements OnInit {
             this.map.setCenter(new google.maps.LatLng(london.lat, london.lng));
             this.map.setZoom(7);
         }
+    }
+    sendLocation() {
+        window.navigator.geolocation.getCurrentPosition((position) => {
+            
+        });
     }
 }

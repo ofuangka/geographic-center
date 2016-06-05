@@ -1,17 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { ROUTER_DIRECTIVES } from '@angular/router';
+import { GroupService } from '../group.service';
+import { Group } from '../group';
+import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
+import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 
 @Component({
     moduleId: module.id,
     selector: 'app-groups',
     templateUrl: 'groups.component.html',
     styleUrls: ['groups.component.css'],
-    directives: [MD_CARD_DIRECTIVES, ROUTER_DIRECTIVES]
+    directives: [
+        MD_CARD_DIRECTIVES, 
+        ROUTER_DIRECTIVES, 
+        MD_PROGRESS_CIRCLE_DIRECTIVES,
+        MD_ICON_DIRECTIVES
+    ]
 })
 export class GroupsComponent implements OnInit {
-    groups: Object[] = [{ id: '1', name: 'Ultimate group', createdTs: (new Date()).getTime() }];
-    constructor() { }
+    groups: Group[];
+    isLoading = true;
+    constructor(private groupService: GroupService) { }
     ngOnInit() {
+        this.groupService.list().then(groups => {
+            this.groups = groups;
+            this.isLoading = false;
+        });
     }
 }
