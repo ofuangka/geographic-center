@@ -1,4 +1,4 @@
-export class GroupMember {
+export class Member {
     id: string;
     groupId: string;
     userId: string;

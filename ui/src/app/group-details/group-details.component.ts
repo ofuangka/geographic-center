@@ -4,13 +4,13 @@ import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MD_SLIDE_TOGGLE_DIRECTIVES } from '@angular2-material/slide-toggle';
 import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
-import { GroupMember } from '../group-member';
+import { Member } from '../member';
 import { DecimalPipe } from '@angular/common';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Group } from '../group';
 import { GroupService } from '../group.service';
 import { RouteSegment } from '@angular/router';
-import { GroupMemberService } from '../group-member.service';
+import { MemberService } from '../member.service';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { LocationService } from '../location.service';
 import { UserInfoService } from '../user-info.service';
@@ -31,11 +31,11 @@ import { NotificationService } from '../notification.service';
         ROUTER_DIRECTIVES,
         MD_BUTTON_DIRECTIVES
     ],
-    providers: [GroupMemberService]
+    providers: [MemberService]
 })
 export class GroupDetailsComponent implements OnInit {
     group: Group;
-    members: GroupMember[];
+    members: Member[];
     enabledMembers = {};
     map: google.maps.Map;
     bounds = new google.maps.LatLngBounds();
@@ -44,7 +44,7 @@ export class GroupDetailsComponent implements OnInit {
     isSendingLocation = true;
     constructor(private groupService: GroupService,
         private routeSegment: RouteSegment,
-        private groupMemberService: GroupMemberService,
+        private memberService: MemberService,
         private locationService: LocationService,
         private userInfoService: UserInfoService,
         private notificationService: NotificationService) { }
@@ -53,7 +53,7 @@ export class GroupDetailsComponent implements OnInit {
 
         this.groupService.read(groupId).then(group => this.group = group);
 
-        this.groupMemberService.list(groupId).then(members => {
+        this.memberService.list(groupId).then(members => {
             this.members = members;
 
             /* all members should be enabled initially */
@@ -131,7 +131,7 @@ export class GroupDetailsComponent implements OnInit {
         this.locationService.getCurrentPosition().then(coords => {
             this.notificationService.clear();
             let groupId = this.routeSegment.getParam('groupId');
-            this.groupMemberService.updatePosition(groupId, coords.latitude, coords.longitude).then(
+            this.memberService.updatePosition(groupId, coords.latitude, coords.longitude).then(
                 () => this.isSendingLocation = false,
                 this.handleUpdateFailure.bind(this));
         }, this.handlePositionFailure.bind(this));
@@ -144,7 +144,7 @@ export class GroupDetailsComponent implements OnInit {
         this.isSendingLocation = false;
         this.notificationService.notify('Warning: Could not save location');
     }
-    onMessageReceived(newValue: GroupMember) {
+    onMessageReceived(newValue: Member) {
         for (let i = 0, len = this.members.length; i < len; i++) {
             if (this.members[i].id === newValue.id) {
                 this.members.splice(i, 1, newValue);
