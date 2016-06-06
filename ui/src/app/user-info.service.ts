@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { UserInfo } from './user-info';
+import { Http } from '@angular/http';
+import './rxjs-operations';
 
 @Injectable()
 export class UserInfoService {
 
-    constructor() { }
+    constructor(private http: Http) { }
     read() {
-        return new Promise<UserInfo>(resolve => setTimeout(() => resolve(new UserInfo()), 3000));
+        return this.http.get('/api/user-info').toPromise().then(response => response.json());
     }
 
 }

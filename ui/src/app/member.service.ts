@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Member } from './member';
+import { Http } from '@angular/http';
+import './rxjs-operations';
 
 @Injectable()
 export class MemberService {
 
-    constructor() { }
+    constructor(private http: Http) { }
 
     list(groupId: string) {
-        return new Promise<Member[]>(resolve => setTimeout(() => resolve(MEMBERS), 3000));
+        return this.http.get(`/api/members?gid=${groupId}`).toPromise().then(response => response.json());
     }
     
-    updatePosition(groupId: string, lat: number, lng: number) {
-        return new Promise(resolve => setTimeout(() => resolve(), 1000));
+    savePosition(groupId: string, lat: number, lng: number) {
+        return this.http.post(`/api/members`, JSON.stringify({
+            groupId: groupId,
+            lat: lat,
+            lng: lng
+        })).toPromise().then(response => response.json());
     }
 
 }
-var MEMBERS: Member[] = [
-    { id: '0', groupId: '0', userId: '0', name: 'ofuangka', lat: 0, lng: 0, lastUpdatedTs: new Date().getTime() },
-    { id: '1', groupId: '1', userId: '1', name: 'tracylvalenzuela', lat: 0, lng: 0, lastUpdatedTs: new Date().getTime() },
-    { id: '2', groupId: '2', userId: '2', name: 'forrestjacobs', lat: 0, lng: 0, lastUpdatedTs: new Date().getTime() }
-];

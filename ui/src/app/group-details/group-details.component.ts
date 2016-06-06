@@ -40,8 +40,8 @@ export class GroupDetailsComponent implements OnInit {
     map: google.maps.Map;
     bounds = new google.maps.LatLngBounds();
     decimalFormat = '1.4-4';
-    isLoading = true;
-    isSendingLocation = true;
+    isLoading: boolean;
+    isSendingLocation: boolean;
     constructor(private groupService: GroupService,
         private routeSegment: RouteSegment,
         private memberService: MemberService,
@@ -49,9 +49,13 @@ export class GroupDetailsComponent implements OnInit {
         private userInfoService: UserInfoService,
         private notificationService: NotificationService) { }
     ngOnInit() {
+        this.isLoading = true;
+        
         let groupId = this.routeSegment.getParam('groupId');
+        
+        this.notificationService.clear();
 
-        this.groupService.read(groupId).then(group => this.group = group);
+        this.groupService.read(groupId).then(group => this.group = group, this.handleGroupFailure.bind(this));
 
         this.memberService.list(groupId).then(members => {
             this.members = members;
@@ -62,6 +66,8 @@ export class GroupDetailsComponent implements OnInit {
             });
 
             this.drawMap();
+            
+            this.isSendingLocation = true;
             this.isLoading = false;
 
             /* add self if not a member */
@@ -75,11 +81,16 @@ export class GroupDetailsComponent implements OnInit {
                 }
                 if (!isMember) {
                     this.sendLocation();
-                } else {
-                    this.isSendingLocation = false;
                 }
+                this.isSendingLocation = false;
+            }, () => {
+                this.handleUserInfoFailure();
+                this.isSendingLocation = false;
             });
 
+        }, () => {
+            this.handleMemberFailure();
+            this.isLoading = false;
         });
     }
     drawMap() {
@@ -130,19 +141,22 @@ export class GroupDetailsComponent implements OnInit {
     sendLocation() {
         this.isSendingLocation = true;
         this.locationService.getCurrentPosition().then(coords => {
-            this.notificationService.clear();
             let groupId = this.routeSegment.getParam('groupId');
-            this.memberService.updatePosition(groupId, coords.latitude, coords.longitude).then(
+            this.memberService.savePosition(groupId, coords.latitude, coords.longitude).then(
                 () => this.isSendingLocation = false,
-                this.handleUpdateFailure.bind(this));
-        }, this.handlePositionFailure.bind(this));
+                () => {
+                    this.handleUpdateFailure();
+                    this.isSendingLocation = false;
+                });
+        }, () => {
+            this.handlePositionFailure();
+            this.isSendingLocation = false;
+        });
     }
-    handlePositionFailure(reason) {
-        this.isSendingLocation = false;
+    handlePositionFailure() {
         this.notificationService.notify('Warning: Could not determine location');
     }
     handleUpdateFailure() {
-        this.isSendingLocation = false;
         this.notificationService.notify('Warning: Could not save location');
     }
     onMessageReceived(newValue: Member) {
@@ -157,5 +171,14 @@ export class GroupDetailsComponent implements OnInit {
                 break;
             }
         }
+    }
+    handleUserInfoFailure() {
+        this.notificationService.notify('Warning: Could not determine user');
+    }
+    handleGroupFailure() {
+        this.notificationService.notify('Warning: Could not retrieve group info');
+    }
+    handleMemberFailure() {
+        this.notificationService.notify('Warning: Could not retrieve group members');
     }
 }

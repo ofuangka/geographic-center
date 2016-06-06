@@ -64,7 +64,7 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
         private notificationService: NotificationService) { }
     ngOnInit() {
         this.notificationService.subscribe(this);
-        this.userInfoService.read().then((userInfo: UserInfo) => this.username = userInfo.username);
+        this.userInfoService.read().then(userInfo => this.username = userInfo.username, this.handleUserInfoFailure.bind(this));
         this.locationService.getCurrentPosition().then(null, this.handleLocationFailure.bind(this));
     }
     showView(view: string) {
@@ -76,15 +76,19 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
             this.isCreatingGroup = false;
             this.formShowing = false;
             this.router.navigate(['/groups', group.id]);
-        }, this.handleSaveFailure);
+        }, this.handleSaveFailure.bind(this));
     }
     handleSaveFailure() {
-
+        this.notification = 'Warning: Could not create group';
+        this.isCreatingGroup = false;
     }
     handleLocationFailure(reason) {
         this.notification = 'Warning: Could not determine location';
     }
     notify(message: string) {
         this.notification = message;
+    }
+    handleUserInfoFailure() {
+        this.notification = 'Warning: Could not determine user';
     }
 }

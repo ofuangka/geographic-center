@@ -1,31 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Group } from './group';
+import { Http } from '@angular/http';
+import './rxjs-operations';
 
 @Injectable()
 export class GroupService {
-    constructor() { }
+    constructor(private http: Http) { }
     list() {
-        return new Promise<Group[]>(resolve => setTimeout(() => resolve(GROUPS), 3000));
+        return this.http.get('/api/groups').toPromise().then(response => response.json());
     }
-    read(id: string) {
-        return new Promise<Group>(resolve => setTimeout(() => {
-            let ret = Object.create(null);
-            for (let i = 0, len = GROUPS.length; i < len; i++) {
-                let group = GROUPS[i];
-                if (group.id === id) {
-                    ret = group;
-                    break;
-                }
-            }
-            resolve(ret);
-        }, 3000));
+    read(groupId: string) {
+        return this.http.get(`/api/groups/${groupId}`).toPromise().then(response => response.json());
     }
     save(groupName: string) {
-        return new Promise<Group>(resolve => setTimeout(() => resolve(GROUPS[0]), 1000));
+        return this.http.post(`/api/groups`, JSON.stringify({
+            name: groupName
+        })).toPromise().then(response => response.json());
     }
 }
-let GROUPS = [
-    { id: '1', name: 'Breakfast', createdTs: new Date().getTime() },
-    { id: '2', name: 'Lunch', createdTs: new Date().getTime() },
-    { id: '3', name: 'Dinner', createdTs: new Date().getTime() }
-];
