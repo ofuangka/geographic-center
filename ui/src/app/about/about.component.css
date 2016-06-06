@@ -1,3 +1,12 @@
 md-card {
     margin: 10px;
 }
+
+.text-center {
+    text-align: center;
+}
+
+.scale {
+    max-width: 100%;
+    height: auto;
+}
