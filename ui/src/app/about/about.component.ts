@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MD_TABS_DIRECTIVES } from '@angular2-material/tabs';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
+import { NotificationService } from '../notification.service';
 
 @Component({
     moduleId: module.id,
@@ -11,9 +12,10 @@ import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 })
 export class AboutComponent implements OnInit {
 
-    constructor() { }
+    constructor(private notificationService: NotificationService) { }
 
     ngOnInit() {
+        this.notificationService.clear();
     }
 
 }

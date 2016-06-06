@@ -21,16 +21,20 @@ import { NotificationService } from '../notification.service';
 })
 export class GroupsComponent implements OnInit {
     groups: Group[];
-    isLoading = true;
+    isLoading: boolean;
     constructor(private groupService: GroupService, private notificationService: NotificationService) { }
     ngOnInit() {
+        this.isLoading = true;
+        this.notificationService.clear();
         this.groupService.list().then(groups => {
             this.groups = groups;
             this.isLoading = false;
-        }, this.handleGroupsFailure.bind(this));
+        }, () => {
+            this.handleGroupsFailure();
+            this.isLoading = false;
+        });
     }
     handleGroupsFailure() {
         this.notificationService.notify('Warning: Could not retrieve groups');
-        this.isLoading = false;
     }
 }
