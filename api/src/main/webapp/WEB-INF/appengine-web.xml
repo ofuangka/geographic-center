@@ -9,5 +9,6 @@
     </static-files>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+        <property name="geographic-center.logout-url" value="https://geographic-center.appspot.com/ui/" />
     </system-properties>
 </appengine-web-app>

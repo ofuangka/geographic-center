@@ -12,8 +12,8 @@ import { Routes, Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/ro
 import { GroupsComponent } from './groups/groups.component';
 import { AboutComponent } from './about/about.component';
 import { GroupDetailsComponent } from './group-details/group-details.component';
-import { UserInfoService } from './user-info.service';
-import { UserInfo } from './user-info';
+import { UserService } from './user.service';
+import { User } from './user';
 import { GroupService } from './group.service';
 import { LocationService } from './location.service';
 import { Notifee } from './notifee';
@@ -37,7 +37,7 @@ import { NotificationService } from './notification.service';
     ],
     providers: [
         MdIconRegistry,
-        UserInfoService,
+        UserService,
         GroupService,
         LocationService,
         NotificationService
@@ -56,15 +56,19 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
     formShowing = false;
     username: string;
     isCreatingGroup = false;
-    notification: string;
+    notification: string = '';
+    logoutUrl: string;
     constructor(private router: Router,
-        private userInfoService: UserInfoService,
+        private userService: UserService,
         private groupService: GroupService,
         private locationService: LocationService,
         private notificationService: NotificationService) { }
     ngOnInit() {
         this.notificationService.subscribe(this);
-        this.userInfoService.read().then(userInfo => this.username = userInfo.username, this.handleUserInfoFailure.bind(this));
+        this.userService.read().then(user => {
+            this.username = user.username;
+            this.logoutUrl = user.logoutUrl;
+        }, this.handleUserFailure.bind(this));
         this.locationService.getCurrentPosition().then(null, this.handleLocationFailure.bind(this));
     }
     showView(view: string) {
@@ -88,7 +92,7 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
     notify(message: string) {
         this.notification = message;
     }
-    handleUserInfoFailure() {
+    handleUserFailure() {
         this.notification = 'Warning: Could not determine user';
     }
 }

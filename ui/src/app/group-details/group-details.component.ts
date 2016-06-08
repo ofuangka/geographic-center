@@ -13,8 +13,8 @@ import { RouteSegment } from '@angular/router';
 import { MemberService } from '../member.service';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { LocationService } from '../location.service';
-import { UserInfoService } from '../user-info.service';
-import { UserInfo } from '../user-info';
+import { UserService } from '../user.service';
+import { User } from '../user';
 import { NotificationService } from '../notification.service';
 
 @Component({
@@ -46,14 +46,12 @@ export class GroupDetailsComponent implements OnInit {
         private routeSegment: RouteSegment,
         private memberService: MemberService,
         private locationService: LocationService,
-        private userInfoService: UserInfoService,
+        private userService: UserService,
         private notificationService: NotificationService) { }
     ngOnInit() {
         this.isLoading = true;
         
         let groupId = this.routeSegment.getParam('groupId');
-        
-        this.notificationService.clear();
 
         this.groupService.read(groupId).then(group => this.group = group, this.handleGroupFailure.bind(this));
 
@@ -71,10 +69,10 @@ export class GroupDetailsComponent implements OnInit {
             this.isLoading = false;
 
             /* add self if not a member */
-            this.userInfoService.read().then(userInfo => {
+            this.userService.read().then(user => {
                 let isMember = false;
                 for (let i = 0, len = this.members.length; i < len; i++) {
-                    if (userInfo.id === this.members[i].userId) {
+                    if (user.id === this.members[i].userId) {
                         isMember = true;
                         break;
                     }
@@ -107,7 +105,7 @@ export class GroupDetailsComponent implements OnInit {
             this.bounds.extend(new google.maps.Marker({
                 position: new google.maps.LatLng(member.lat, member.lng),
                 map: this.map,
-                label: member.name
+                label: member.username
             }).getPosition());
 
             center.lat += member.lat;

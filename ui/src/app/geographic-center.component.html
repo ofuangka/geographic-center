@@ -7,7 +7,7 @@
                 <span md-line class="secondary">{{view.description}}</span>
             </a>
             <md-divider></md-divider>
-            <a md-list-item>
+            <a md-list-item [href]="logoutUrl">
                 <md-icon md-list-icon>power_settings_new</md-icon>
                 <span md-line>Sign out</span>
                 <span md-line class="secondary" *ngIf="!username">...</span>

@@ -25,7 +25,6 @@ export class GroupsComponent implements OnInit {
     constructor(private groupService: GroupService, private notificationService: NotificationService) { }
     ngOnInit() {
         this.isLoading = true;
-        this.notificationService.clear();
         this.groupService.list().then(groups => {
             this.groups = groups;
             this.isLoading = false;

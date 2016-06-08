@@ -10,3 +10,7 @@ md-card {
     max-width: 100%;
     height: auto;
 }
+
+.img-container {
+    margin-top: 50px;
+}
