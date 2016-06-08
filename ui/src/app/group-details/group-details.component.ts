@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
@@ -16,6 +16,7 @@ import { LocationService } from '../location.service';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { NotificationService } from '../notification.service';
+import { Observable, Subscription } from 'rxjs/Rx';
 
 @Component({
     moduleId: module.id,
@@ -31,9 +32,9 @@ import { NotificationService } from '../notification.service';
         ROUTER_DIRECTIVES,
         MD_BUTTON_DIRECTIVES
     ],
-    providers: [MemberService]
+    providers: [MemberService, ChangeDetectorRef]
 })
-export class GroupDetailsComponent implements OnInit {
+export class GroupDetailsComponent implements OnInit, OnDestroy {
     group: Group;
     members: Member[];
     enabledMembers = {};
@@ -42,12 +43,16 @@ export class GroupDetailsComponent implements OnInit {
     decimalFormat = '1.4-4';
     isLoading: boolean;
     isSendingLocation: boolean;
+    messageConnection: WebSocket;
+    ping: Subscription;
+    self: User;
     constructor(private groupService: GroupService,
         private routeSegment: RouteSegment,
         private memberService: MemberService,
         private locationService: LocationService,
         private userService: UserService,
-        private notificationService: NotificationService) { }
+        private notificationService: NotificationService,
+        private changeDetectorRef: ChangeDetectorRef) { }
     ngOnInit() {
         this.isLoading = true;
         
@@ -56,6 +61,7 @@ export class GroupDetailsComponent implements OnInit {
         this.groupService.read(groupId).then(group => this.group = group, this.handleGroupFailure.bind(this));
 
         this.memberService.list(groupId).then(members => {
+            let thirtySeconds = 30000;
             this.members = members;
 
             /* all members should be enabled initially */
@@ -68,11 +74,16 @@ export class GroupDetailsComponent implements OnInit {
             this.isSendingLocation = true;
             this.isLoading = false;
 
+            this.messageConnection = new WebSocket('wss://geographic-center-ws.herokuapp.com');
+            this.messageConnection.onmessage = this.handleMessage.bind(this);
+            this.ping = Observable.interval(thirtySeconds).subscribe(count => this.messageConnection.send('"ping"'));
+
             /* add self if not a member */
             this.userService.read().then(user => {
+                this.self = user;
                 let isMember = false;
                 for (let i = 0, len = this.members.length; i < len; i++) {
-                    if (user.id === this.members[i].userId) {
+                    if (this.self.id === this.members[i].userId) {
                         isMember = true;
                         break;
                     }
@@ -140,7 +151,10 @@ export class GroupDetailsComponent implements OnInit {
         this.locationService.getCurrentPosition().then(coords => {
             let groupId = this.routeSegment.getParam('groupId');
             this.memberService.savePosition(groupId, coords.latitude, coords.longitude).then(
-                () => this.isSendingLocation = false,
+                (newMember) => {
+                    this.messageConnection.send(JSON.stringify(newMember));
+                    this.isSendingLocation = false;
+                },
                 () => {
                     this.handleUpdateFailure();
                     this.isSendingLocation = false;
@@ -177,5 +191,26 @@ export class GroupDetailsComponent implements OnInit {
     }
     handleMemberFailure() {
         this.notificationService.notify('Warning: Could not retrieve group members');
+    }
+    handleMessage(message) {
+        let newMember: Member = JSON.parse(message.data);
+
+        /* replace the old member if it already exists */
+        var memberExists = false;
+        for (let i = 0, len = this.members.length; i < len; i++) {
+            if (newMember.id === this.members[i].id) {
+                this.members.splice(i, 1, newMember);
+                memberExists = true;
+                break;
+            }
+        }
+        if (!memberExists) {
+            this.members.push(newMember);
+            this.enabledMembers[newMember.id] = true;
+        }
+        this.changeDetectorRef.detectChanges();
+    }
+    ngOnDestroy() {
+        this.ping.unsubscribe();
     }
 }
