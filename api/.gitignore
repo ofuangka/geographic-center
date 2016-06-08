@@ -1,2 +1,7 @@
 # compiled
 target/
+
+# eclipse
+.classpath
+.project
+.settings/
