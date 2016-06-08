@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Member } from './member';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import './rxjs-operations';
 
 @Injectable()
@@ -17,7 +17,11 @@ export class MemberService {
             groupId: groupId,
             lat: lat,
             lng: lng
-        })).toPromise().then(response => response.json());
+        }), {
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        }).toPromise().then(response => response.json());
     }
 
 }

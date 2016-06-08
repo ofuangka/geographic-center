@@ -26,11 +26,11 @@
         <md-card>
             <md-card-title>Create a new group</md-card-title>
             <md-card-content>
-                <form #newGroupForm>
+                <form>
                     <md-input placeholder="Name" #newGroupName maxLength="100" required="true"></md-input>
                     <md-hint align="end">{{newGroupName.characterCount}} / 100 characters</md-hint>
                 </form>
-                <button md-raised-button class="pull-right" color="accent" (click)="createGroup()" [disabled]="newGroupName.empty || isCreatingGroup">Save</button>
+                <button md-raised-button class="pull-right" color="accent" (click)="createGroup(newGroupName.value)" [disabled]="newGroupName.empty || isCreatingGroup">Save</button>
             </md-card-content>
         </md-card>
     </div>

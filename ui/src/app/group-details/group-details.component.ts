@@ -125,8 +125,7 @@ export class GroupDetailsComponent implements OnInit {
                 new google.maps.Marker({
                     position: new google.maps.LatLng(center.lat, center.lng),
                     map: this.map,
-                    animation: google.maps.Animation.DROP,
-                    zIndex: 1
+                    animation: google.maps.Animation.DROP
                 }));
             this.map.fitBounds(this.bounds);
         } else {

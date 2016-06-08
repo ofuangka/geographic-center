@@ -74,9 +74,10 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
     showView(view: string) {
         this.router.navigate([view]);
     }
-    createGroup() {
+    createGroup(name: string) {
+        /* TODO: revisit this because angular2 material form validation isn't straightforward */
         this.isCreatingGroup = true;
-        this.groupService.save('').then((group) => {
+        this.groupService.create(name).then((group) => {
             this.isCreatingGroup = false;
             this.formShowing = false;
             this.router.navigate(['/groups', group.id]);

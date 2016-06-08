@@ -13,11 +13,11 @@
 		<app.id>geographic-center</app.id>
 		<app.version>1</app.version>
 		<appengine.version>1.9.38</appengine.version>
-		<gcloud.plugin.version>2.0.9.74.v20150814</gcloud.plugin.version>
+		<gcloud.plugin.version>2.0.9.111.v20160525</gcloud.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
-		<spring.version>4.2.1.RELEASE</spring.version>
-		<jersey.version>2.22</jersey.version>
+		<spring.version>4.2.6.RELEASE</spring.version>
+		<jersey.version>2.23</jersey.version>
 	</properties>
 
 	<prerequisites>

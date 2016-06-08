@@ -7,6 +7,6 @@
 <div class="card-container" *ngIf="groups && groups.length > 0">
     <md-card *ngFor="let group of groups">
         <md-card-title><a [routerLink]="['/groups', group.id]">{{group.name}}</a></md-card-title>
-        <md-card-subtitle>{{group.createdTs | date}}</md-card-subtitle>
+        <md-card-subtitle>{{group.createdTs | date : 'medium'}}</md-card-subtitle>
     </md-card>
 </div>

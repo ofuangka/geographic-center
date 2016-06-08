@@ -33,17 +33,23 @@ public class MemberInstanceResource {
 	private SecurityService securityService;
 
 	@POST
-	public Member update(@PathParam("groupId") String groupId, @PathParam("memberId") String memberId,
+	public Member update(@PathParam("memberId") String memberId,
 			@Valid Member newValue) {
 		Member oldValue = memberDao.get(memberId);
-
-		// check that they are not trying to change the group
-		if (StringUtils.equals(oldValue.getGroupId(), newValue.getGroupId())) {
-			newValue.setId(memberId);
-			newValue.setLastUpdatedTs(Calendar.getInstance().getTime());
-			return memberDao.update(newValue);
+		
+		// check that the user owns this Member
+		if (StringUtils.equals(securityService.getUserId(), oldValue.getUserId())) {
+	
+			// check that they are not trying to change the group
+			if (StringUtils.equals(oldValue.getGroupId(), newValue.getGroupId())) {
+				newValue.setId(memberId);
+				newValue.setLastUpdatedTs(Calendar.getInstance().getTime());
+				return memberDao.update(newValue);
+			} else {
+				throw new SecurityException("User trying to change a Member's group.");
+			}
 		} else {
-			throw new SecurityException("User trying to change a Member's group.");
+			throw new SecurityException("User trying to change a Member they do not own");
 		}
 	}
 

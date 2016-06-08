@@ -21,7 +21,7 @@ public class GoogleGroupDao extends GoogleDatastoreDao<Group> implements GroupDa
 	private static final String KIND_GROUP = "Group";
 	private static final String KEY_NAME = "name";
 	private static final String KEY_CREATED_BY = "createdBy";
-	private static final String KEY_TS = "ts";
+	private static final String KEY_CREATED_TS = "createdTs";
 
 	private static GoogleDatastoreEntityMapper<Group> groupMapper = new GoogleDatastoreEntityMapper<Group>() {
 
@@ -31,7 +31,7 @@ public class GoogleGroupDao extends GoogleDatastoreDao<Group> implements GroupDa
 			ret.setId(KeyFactory.keyToString(e.getKey()));
 			ret.setName((String) e.getProperty(KEY_NAME));
 			ret.setCreatedBy((String) e.getProperty(KEY_CREATED_BY));
-			ret.setCreatedTs((Date) e.getProperty(KEY_TS));
+			ret.setCreatedTs((Date) e.getProperty(KEY_CREATED_TS));
 			return ret;
 		}
 
@@ -39,7 +39,7 @@ public class GoogleGroupDao extends GoogleDatastoreDao<Group> implements GroupDa
 		public void map(Group from, Entity to) {
 			to.setProperty(KEY_NAME, from.getName());
 			to.setProperty(KEY_CREATED_BY, from.getCreatedBy());
-			to.setProperty(KEY_TS, from.getCreatedTs());
+			to.setProperty(KEY_CREATED_TS, from.getCreatedTs());
 		}
 	};
 
