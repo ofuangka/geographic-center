@@ -13,8 +13,8 @@ import { NotificationService } from '../notification.service';
     templateUrl: 'groups.component.html',
     styleUrls: ['groups.component.css'],
     directives: [
-        MD_CARD_DIRECTIVES, 
-        ROUTER_DIRECTIVES, 
+        MD_CARD_DIRECTIVES,
+        ROUTER_DIRECTIVES,
         MD_PROGRESS_CIRCLE_DIRECTIVES,
         MD_ICON_DIRECTIVES
     ]
@@ -26,7 +26,7 @@ export class GroupsComponent implements OnInit {
     ngOnInit() {
         this.isLoading = true;
         this.groupService.list().then(groups => {
-            this.groups = groups;
+            this.groups = groups.sort(function (a, b) { return b.createdTs - a.createdTs });
             this.isLoading = false;
         }, () => {
             this.handleGroupsFailure();

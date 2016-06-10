@@ -7,7 +7,7 @@ import './rxjs-operations';
 export class UserService {
 
     constructor(private http: Http) { }
-    read() {
+    read(): Promise<User> {
         return this.http.get('/api/users/self').toPromise().then(response => response.json());
     }
 
