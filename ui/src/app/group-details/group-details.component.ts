@@ -134,7 +134,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                 content: `
                     <h3>Geographic Center</h3>
                     <p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>
-                    <p><a href="https://www.google.com/maps/search/restaurants/@${center.lat},${center.lng}">Search nearby</a></p>`
+                    <p><a href="https://www.google.com/maps/search/restaurants/@${center.lat},${center.lng}" target="_blank">Search nearby...</a></p>`
             }).open(this.map,
                 new google.maps.Marker({
                     position: new google.maps.LatLng(center.lat, center.lng),
