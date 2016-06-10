@@ -16,9 +16,7 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
     mvn clean install appengine:update
 
 ## To dos
-* Add map directive
-* Display error when geolocation not enabled
-* Improve styling
 * Move create group form into a dialog
-* Figure out form validation
 * Add better favicon
+* Add reconnecting websocket
+* Websocket failure detection

@@ -55,7 +55,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         private changeDetectorRef: ChangeDetectorRef) { }
     ngOnInit() {
         this.isLoading = true;
-        
+
         let groupId = this.routeSegment.getParam('groupId');
 
         this.groupService.read(groupId).then(group => this.group = group, this.handleGroupFailure.bind(this));
@@ -70,7 +70,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             });
 
             this.drawMap();
-            
+
             this.isSendingLocation = true;
             this.isLoading = false;
 
@@ -131,7 +131,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
             /* add the info window */
             new google.maps.InfoWindow({
-                content: `<h3>Geographic Center</h3><p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>`
+                content: `
+                    <h3>Geographic Center</h3>
+                    <p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>
+                    <p><a href="https://www.google.com/maps/search/restaurants/@${center.lat},${center.lng}">Search nearby</a></p>`
             }).open(this.map,
                 new google.maps.Marker({
                     position: new google.maps.LatLng(center.lat, center.lng),
