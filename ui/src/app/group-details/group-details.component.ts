@@ -17,6 +17,7 @@ import { UserService } from '../user.service';
 import { User } from '../user';
 import { NotificationService } from '../notification.service';
 import { Observable, Subscription } from 'rxjs/Rx';
+import { ReconnectingWebSocket } from '../reconnecting-websocket';
 
 @Component({
     moduleId: module.id,
@@ -43,7 +44,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     decimalFormat = '1.4-4';
     isLoading: boolean;
     isSendingLocation: boolean;
-    messageConnection: WebSocket;
+    messageConnection: ReconnectingWebSocket;
     ping: Subscription;
     self: User;
     constructor(private groupService: GroupService,
@@ -74,7 +75,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             this.isSendingLocation = true;
             this.isLoading = false;
 
-            this.messageConnection = new WebSocket('wss://geographic-center-ws.herokuapp.com');
+            this.messageConnection = new ReconnectingWebSocket('wss://geographic-center-ws.herokuapp.com');
             this.messageConnection.onmessage = this.handleMessage.bind(this);
             this.ping = Observable.interval(thirtySeconds).subscribe(count => this.messageConnection.send('"ping"'));
 
@@ -134,7 +135,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                 content: `
                     <h3>Geographic Center</h3>
                     <p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>
-                    <p><a href="https://www.google.com/maps/search/restaurants/@${center.lat},${center.lng}" target="_blank">Search nearby...</a></p>`
+                    <p><a href="https://www.google.com/maps/?q=restaurants&sll=${center.lat},${center.lng}" target="_blank">Search nearby...</a></p>`
             }).open(this.map,
                 new google.maps.Marker({
                     position: new google.maps.LatLng(center.lat, center.lng),
@@ -171,7 +172,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.notificationService.notify('Warning: Could not determine location');
     }
     handleUpdateFailure() {
-        this.notificationService.notify('Warning: Could not save location');
+        this.notificationService.notify('Error: Could not save location');
     }
     onMessageReceived(newValue: Member) {
         for (let i = 0, len = this.members.length; i < len; i++) {
@@ -187,13 +188,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         }
     }
     handleUserInfoFailure() {
-        this.notificationService.notify('Warning: Could not determine user');
+        this.notificationService.notify('Error: Could not retrieve user data');
     }
     handleGroupFailure() {
-        this.notificationService.notify('Warning: Could not retrieve group info');
+        this.notificationService.notify('Error: Could not read group info');
     }
     handleMemberFailure() {
-        this.notificationService.notify('Warning: Could not retrieve group members');
+        this.notificationService.notify('Error: Could not retrieve group members');
     }
     handleMessage(message) {
         let newMember: Member = JSON.parse(message.data);
@@ -208,7 +209,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             }
         }
         if (!memberExists) {
-            this.members.push(newMember);
+            this.members.unshift(newMember);
             this.enabledMembers[newMember.id] = true;
         }
         this.changeDetectorRef.detectChanges();

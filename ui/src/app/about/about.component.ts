@@ -41,6 +41,7 @@ export class AboutComponent implements OnInit {
         if (elapsedTime <= maxTime) {
             if (Math.abs(xDistance) >= threshold && Math.abs(yDistance) <= maxError) {
                 this.tabGroup.selectedIndex = (xDistance < 0) ? 1 : 0;
+                event.preventDefault();
             }
         }
     }

@@ -34,6 +34,6 @@ export class GroupsComponent implements OnInit {
         });
     }
     handleGroupsFailure() {
-        this.notificationService.notify('Warning: Could not retrieve groups');
+        this.notificationService.notify('Error: Could not retrieve groups');
     }
 }

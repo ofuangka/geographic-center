@@ -84,7 +84,7 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
         }, this.handleSaveFailure.bind(this));
     }
     handleSaveFailure() {
-        this.notification = 'Warning: Could not create group';
+        this.notification = 'Error: Could not create group';
         this.isCreatingGroup = false;
     }
     handleLocationFailure(reason) {
@@ -94,6 +94,6 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
         this.notification = message;
     }
     handleUserFailure() {
-        this.notification = 'Warning: Could not determine user';
+        this.notification = 'Error: Could not retrieve user data';
     }
 }
