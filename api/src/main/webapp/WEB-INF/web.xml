@@ -17,9 +17,14 @@
 		<servlet-name>Jersey Servlet</servlet-name>
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
-	<welcome-file-list>
-		<welcome-file>ui/index.html</welcome-file>
-	</welcome-file-list>
+	<servlet>
+		<servlet-name>UI Redirect Servlet</servlet-name>
+		<servlet-class>ofuangka.geographiccenter.web.UiRedirectServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UI Redirect Servlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Everything</web-resource-name>
