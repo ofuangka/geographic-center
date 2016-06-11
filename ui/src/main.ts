@@ -1,5 +1,6 @@
 import { bootstrap } from '@angular/platform-browser-dynamic';
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, provide } from '@angular/core';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { GeographicCenterAppComponent, environment } from './app/';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { ROUTER_PROVIDERS } from '@angular/router';
@@ -10,6 +11,7 @@ if (environment.production) {
 
 bootstrap(GeographicCenterAppComponent, [
   HTTP_PROVIDERS,
-  ROUTER_PROVIDERS
+  ROUTER_PROVIDERS,
+  provide(LocationStrategy, {useClass: HashLocationStrategy})
 ]);
 

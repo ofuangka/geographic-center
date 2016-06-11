@@ -1,6 +1,6 @@
 <md-card>
     <md-card-title>
-        <a routerLink="/groups">Groups</a> &raquo;
+        <a [routerLink]="['/groups']">Groups</a> &raquo;
         <span *ngIf="!group">...</span>
         <span *ngIf="group">{{group.name}}</span>
     </md-card-title>
@@ -21,3 +21,4 @@
         </md-list>
     </md-card-content>
 </md-card>
+<p class="disclaimer"><small>Disclaimer: This web application stores your geolocation and shares it with other users. Use at your own risk.</small></p>
