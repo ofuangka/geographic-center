@@ -202,15 +202,17 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         var memberExists = false;
         for (let i = 0, len = this.members.length; i < len; i++) {
             if (newMember.id === this.members[i].id) {
-                this.members.splice(i, 1, newMember);
+
+                /* push the member back to the top of the list */
+                this.members.splice(i, 1);
                 memberExists = true;
                 break;
             }
         }
         if (!memberExists) {
-            this.members.unshift(newMember);
             this.enabledMembers[newMember.id] = true;
         }
+        this.members.unshift(newMember);
         this.changeDetectorRef.detectChanges();
     }
     ngOnDestroy() {
