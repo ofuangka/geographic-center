@@ -15,7 +15,6 @@ import { GroupDetailsComponent } from './group-details/group-details.component';
 import { UserService } from './user.service';
 import { User } from './user';
 import { GroupService } from './group.service';
-import { LocationService } from './location.service';
 import { Notifee } from './notifee';
 import { NotificationService } from './notification.service';
 
@@ -39,7 +38,6 @@ import { NotificationService } from './notification.service';
         MdIconRegistry,
         UserService,
         GroupService,
-        LocationService,
         NotificationService
     ]
 })
@@ -61,7 +59,6 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
     constructor(private router: Router,
         private userService: UserService,
         private groupService: GroupService,
-        private locationService: LocationService,
         private notificationService: NotificationService) { }
     ngOnInit() {
         this.notificationService.subscribe(this);
@@ -69,7 +66,6 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
             this.username = user.username;
             this.logoutUrl = user.logoutUrl;
         }, this.handleUserFailure.bind(this));
-        this.locationService.getCurrentPosition().then(null, this.handleLocationFailure.bind(this));
     }
     showView(view: string) {
         this.router.navigate([view]);

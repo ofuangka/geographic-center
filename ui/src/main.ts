@@ -5,11 +5,11 @@ import { HTTP_PROVIDERS } from '@angular/http';
 import { ROUTER_PROVIDERS } from '@angular/router';
 
 if (environment.production) {
-  enableProdMode();
+    enableProdMode();
 }
 
 bootstrap(GeographicCenterAppComponent, [
-  HTTP_PROVIDERS,
-  ROUTER_PROVIDERS
+    HTTP_PROVIDERS,
+    ROUTER_PROVIDERS
 ]);
 

@@ -40,7 +40,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     members: Member[];
     enabledMembers = {};
     map: google.maps.Map;
-    bounds = new google.maps.LatLngBounds();
     decimalFormat = '1.4-4';
     isLoading: boolean;
     isSendingLocation: boolean;
@@ -63,7 +62,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
         this.memberService.list(groupId).then(members => {
             let thirtySeconds = 30000;
-            this.members = members;
+            this.members = members.sort(function (a, b) { return b.lastUpdatedTs - a.lastUpdatedTs; });
 
             /* all members should be enabled initially */
             this.members.forEach(member => {
@@ -104,7 +103,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         });
     }
     drawMap() {
-        let center = { lat: 0, lng: 0 }, count = 0, london = { lat: 51.5074, lng: 0.1278, zoom: 7 }, formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat);
+        let center = { lat: 0, lng: 0 }, count = 0, london = { lat: 51.5074, lng: 0.1278, zoom: 7 }, formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat), bounds = new google.maps.LatLngBounds();
         this.map = new google.maps.Map(document.getElementById('map'), {
             mapTypeControlOptions: {
                 mapTypeIds: []
@@ -114,7 +113,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.members.filter(member => this.enabledMembers[member.id]).forEach(member => {
 
             /* draw the Marker and include it in the bounds */
-            this.bounds.extend(new google.maps.Marker({
+            bounds.extend(new google.maps.Marker({
                 position: new google.maps.LatLng(member.lat, member.lng),
                 map: this.map,
                 label: member.username
@@ -142,7 +141,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                     map: this.map,
                     animation: google.maps.Animation.DROP
                 }));
-            this.map.fitBounds(this.bounds);
+            this.map.fitBounds(bounds);
         } else {
 
             /* set some default center */

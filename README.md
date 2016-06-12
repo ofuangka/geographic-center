@@ -18,6 +18,4 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
 ## To dos
 * Move create group form into a dialog
 * Add better favicon
-* Add reconnecting websocket
 * Websocket failure detection
-* Make routing work (or make groups public/private)
