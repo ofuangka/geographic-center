@@ -33,7 +33,7 @@ import { ReconnectingWebSocket } from '../reconnecting-websocket';
         ROUTER_DIRECTIVES,
         MD_BUTTON_DIRECTIVES
     ],
-    providers: [MemberService, ChangeDetectorRef]
+    providers: [MemberService, ChangeDetectorRef, LocationService]
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
     group: Group;

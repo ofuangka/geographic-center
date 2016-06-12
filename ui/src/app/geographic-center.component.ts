@@ -83,9 +83,6 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
         this.notification = 'Error: Could not create group';
         this.isCreatingGroup = false;
     }
-    handleLocationFailure(reason) {
-        this.notification = 'Warning: Could not determine location';
-    }
     notify(message: string) {
         this.notification = message;
     }
