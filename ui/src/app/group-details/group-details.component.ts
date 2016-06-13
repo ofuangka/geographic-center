@@ -74,8 +74,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             this.isSendingLocation = true;
             this.isLoading = false;
 
+            /* set up the websocket */
             this.messageConnection = new ReconnectingWebSocket('wss://geographic-center-ws.herokuapp.com');
             this.messageConnection.onmessage = this.handleMessage.bind(this);
+            this.messageConnection.onerror = this.handleWsError.bind(this);
             this.ping = Observable.interval(thirtySeconds).subscribe(count => this.messageConnection.send('"ping"'));
 
             /* add self if not a member */
@@ -90,8 +92,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                 }
                 if (!isMember) {
                     this.sendLocation();
+                } else {
+                    this.isSendingLocation = false;
                 }
-                this.isSendingLocation = false;
             }, () => {
                 this.handleUserInfoFailure();
                 this.isSendingLocation = false;
@@ -150,13 +153,19 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         }
     }
     sendLocation() {
+        function isConnectionReady(conn: ReconnectingWebSocket) {
+            return conn.readyState === 1;
+        }
         this.isSendingLocation = true;
         this.locationService.getCurrentPosition().then(coords => {
             let groupId = this.routeSegment.getParam('groupId');
             this.memberService.savePosition(groupId, coords.latitude, coords.longitude).then(
                 (newMember) => {
-                    this.messageConnection.send(JSON.stringify(newMember));
-                    this.isSendingLocation = false;
+                    if (isConnectionReady(this.messageConnection)) {
+                        this.sendMemberMessage(newMember);
+                    } else {
+                        this.messageConnection.onopen = this.sendMemberMessage.bind(this, newMember); 
+                    }
                 },
                 () => {
                     this.handleUpdateFailure();
@@ -217,5 +226,20 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy() {
         this.ping.unsubscribe();
+    }
+    handleWsError(event) {
+        this.notificationService.notify(`Error: WebSocket failure - Refresh the app`);
+    }
+    handleWsSendError(error) {
+        this.notificationService.notify(`Error: WebSocket send failure - ${error.message}`)
+    }
+    sendMemberMessage(member: Member) {
+        try {
+            this.messageConnection.send(JSON.stringify(member));
+        } catch (error) {
+            this.handleWsSendError(error);
+        } finally {
+            this.isSendingLocation = false;
+        }
     }
 }
