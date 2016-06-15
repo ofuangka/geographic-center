@@ -18,19 +18,27 @@ md-sidenav-layout {
   background: rgba(0,0,0,0.03);
 }
 
-md-input {
-  margin: 8px 0;
-  width: 100%;
-}
-
-.form {
-  display: flex;
-}
-
 .form md-card {
   flex-grow: 1;
 }
 
 .pull-right {
   float: right;
+}
+
+.input-container {
+  display: flex;
+}
+
+.input-container > md-input {
+  flex-grow: 1;
+  margin-right: 8px;
+}
+
+.clearfix {
+  clear: both;
+}
+
+md-hint {
+  display: block;
 }
