@@ -77,7 +77,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             /* set up the websocket */
             this.messageConnection = new ReconnectingWebSocket('wss://geographic-center-ws.herokuapp.com');
             this.messageConnection.onmessage = this.handleMessage.bind(this);
-            this.messageConnection.onerror = this.handleWsError.bind(this);
             this.ping = Observable.interval(thirtySeconds).subscribe(count => this.messageConnection.send('"ping"'));
 
             /* add self if not a member */
@@ -226,9 +225,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy() {
         this.ping.unsubscribe();
-    }
-    handleWsError(event) {
-        this.notificationService.notify(`Error: WebSocket failure - Refresh the app`);
     }
     handleWsSendError(error) {
         this.notificationService.notify(`Error: WebSocket send failure - ${error.message}`)
