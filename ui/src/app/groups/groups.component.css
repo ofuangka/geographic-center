@@ -3,7 +3,7 @@ md-card {
 }
 
 .spinner-container {
-    display: flex;
-    justify-content: space-around;
-    padding-top: 50px;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 50px;
 }

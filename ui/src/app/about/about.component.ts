@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MD_TABS_DIRECTIVES, MdTabGroup } from '@angular2-material/tabs';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { NotificationService } from '../notification.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
     moduleId: module.id,

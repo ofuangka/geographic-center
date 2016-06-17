@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { GroupService } from '../group.service';
-import { Group } from '../group';
+import { GroupService } from '../services/group.service';
+import { Group } from '../domain/group';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
-import { NotificationService } from '../notification.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
     moduleId: module.id,

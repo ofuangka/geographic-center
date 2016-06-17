@@ -16,13 +16,14 @@
         </md-nav-list>
     </md-sidenav>
     <md-toolbar color="primary">
-        <button class="md-icon-button" md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
+        <button md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
         <button md-fab (click)="formShowing=!formShowing">
             <md-icon *ngIf="!formShowing">add</md-icon>
             <md-icon *ngIf="formShowing">remove</md-icon>
         </button>
     </md-toolbar>
     <md-toolbar color="warn" *ngIf="notification">
+        <button md-icon-button (click)="dismissNotification()"><md-icon>clear</md-icon></button>
         <small>{{notification}}</small>
     </md-toolbar>
     <div class="form" *ngIf="formShowing">

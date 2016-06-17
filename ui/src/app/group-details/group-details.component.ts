@@ -4,20 +4,20 @@ import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MD_SLIDE_TOGGLE_DIRECTIVES } from '@angular2-material/slide-toggle';
 import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
-import { Member } from '../member';
+import { Member } from '../domain/member';
 import { DecimalPipe } from '@angular/common';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { Group } from '../group';
-import { GroupService } from '../group.service';
+import { Group } from '../domain/group';
+import { GroupService } from '../services/group.service';
 import { RouteSegment } from '@angular/router';
-import { MemberService } from '../member.service';
+import { MemberService } from '../services/member.service';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
-import { LocationService } from '../location.service';
-import { UserService } from '../user.service';
-import { User } from '../user';
-import { NotificationService } from '../notification.service';
+import { LocationService } from '../services/location.service';
+import { UserService } from '../services/user.service';
+import { User } from '../domain/user';
+import { NotificationService } from '../services/notification.service';
 import { Observable, Subscription } from 'rxjs/Rx';
-import { ReconnectingWebSocket } from '../reconnecting-websocket';
+import { ReconnectingWebSocket } from '../support/reconnecting-websocket';
 
 @Component({
     moduleId: module.id,
