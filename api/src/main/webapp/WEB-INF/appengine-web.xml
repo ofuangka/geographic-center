@@ -6,6 +6,7 @@
     <static-files>
     	<include path="/ui/**.*" />
     	<include path="/favicon.ico" />
+        <include path="/apple-touch-icon.png" />
     </static-files>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
