@@ -19,6 +19,8 @@ import { GroupService } from './services/group.service';
 import { Observer } from './support/observer';
 import { NotificationService } from './services/notification.service';
 import { NameService } from './services/name.service';
+import { MemberService } from './services/member.service';
+import { LocationService } from './services/location.service';
 
 @Component({
     moduleId: module.id,
@@ -42,7 +44,9 @@ import { NameService } from './services/name.service';
         GroupService,
         NotificationService,
         NameService,
-        BrowserService
+        BrowserService,
+        MemberService,
+        LocationService
     ]
 })
 @Routes([

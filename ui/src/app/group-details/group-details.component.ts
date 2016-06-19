@@ -18,6 +18,7 @@ import { User } from '../domain/user';
 import { NotificationService } from '../services/notification.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ReconnectingWebSocket } from '../support/reconnecting-websocket';
+import { Location } from '../domain/location';
 
 @Component({
     moduleId: module.id,
@@ -33,13 +34,12 @@ import { ReconnectingWebSocket } from '../support/reconnecting-websocket';
         ROUTER_DIRECTIVES,
         MD_BUTTON_DIRECTIVES
     ],
-    providers: [MemberService, ChangeDetectorRef, LocationService]
+    providers: [ChangeDetectorRef]
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
     group: Group;
     members: Member[];
     enabledMembers = {};
-    map: google.maps.Map;
     decimalFormat = '1.4-4';
     isLoading: boolean;
     isSendingLocation: boolean;
@@ -105,19 +105,23 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         });
     }
     drawMap() {
-        let center = { lat: 0, lng: 0 }, count = 0, london = { lat: 51.5074, lng: 0.1278, zoom: 7 }, formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat), bounds = new google.maps.LatLngBounds();
-        this.map = new google.maps.Map(document.getElementById('map'), {
-            mapTypeControlOptions: {
-                mapTypeIds: []
-            },
-            streetViewControl: false
-        });
+        let center = { lat: 0, lng: 0 },
+            count = 0,
+            randomLocation = this.locationService.getRandomKnownLocation(),
+            formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat),
+            bounds = new google.maps.LatLngBounds(),
+            map = new google.maps.Map(document.getElementById('map'), {
+                mapTypeControlOptions: {
+                    mapTypeIds: []
+                },
+                streetViewControl: false
+            });
         this.members.filter(member => this.enabledMembers[member.id]).forEach(member => {
 
             /* draw the Marker and include it in the bounds */
             bounds.extend(new google.maps.Marker({
                 position: new google.maps.LatLng(member.lat, member.lng),
-                map: this.map,
+                map: map,
                 label: member.username
             }).getPosition());
 
@@ -128,8 +132,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
         /* add the center marker */
         if (count > 0) {
-            center.lat = center.lat / count;
-            center.lng = center.lng / count;
+            center.lat /= count;
+            center.lng /= count;
 
             /* add the info window */
             new google.maps.InfoWindow({
@@ -137,18 +141,18 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                     <h3>Geographic Center</h3>
                     <p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>
                     <p><a href="https://www.google.com/maps/?q=restaurants&sll=${center.lat},${center.lng}" target="_blank">Search nearby...</a></p>`
-            }).open(this.map,
+            }).open(map,
                 new google.maps.Marker({
                     position: new google.maps.LatLng(center.lat, center.lng),
-                    map: this.map,
+                    map: map,
                     animation: google.maps.Animation.DROP
                 }));
-            this.map.fitBounds(bounds);
+            map.fitBounds(bounds);
         } else {
 
             /* set some default center */
-            this.map.setCenter(new google.maps.LatLng(london.lat, london.lng));
-            this.map.setZoom(london.zoom);
+            map.setCenter(new google.maps.LatLng(randomLocation.lat, randomLocation.lng));
+            map.setZoom(randomLocation.zoom);
         }
     }
     sendLocation() {
@@ -163,7 +167,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                     if (isConnectionReady(this.messageConnection)) {
                         this.sendMemberMessage(newMember);
                     } else {
-                        this.messageConnection.onopen = this.sendMemberMessage.bind(this, newMember); 
+                        this.messageConnection.onopen = this.sendMemberMessage.bind(this, newMember);
                     }
                 },
                 () => {

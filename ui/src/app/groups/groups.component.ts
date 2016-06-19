@@ -6,6 +6,9 @@ import { Group } from '../domain/group';
 import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
 import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 import { NotificationService } from '../services/notification.service';
+import { MemberService } from '../services/member.service';
+import { Member } from '../domain/member';
+import { LocationService } from '../services/location.service';
 
 @Component({
     moduleId: module.id,
@@ -22,12 +25,21 @@ import { NotificationService } from '../services/notification.service';
 export class GroupsComponent implements OnInit {
     groups: Group[];
     isLoading: boolean;
-    constructor(private groupService: GroupService, private notificationService: NotificationService) { }
+    constructor(
+        private groupService: GroupService,
+        private notificationService: NotificationService,
+        private memberService: MemberService,
+        private locationService: LocationService
+    ) { }
     ngOnInit() {
         this.isLoading = true;
         this.groupService.list().then(groups => {
-            this.groups = groups.sort(function (a, b) { return b.createdTs - a.createdTs });
-            this.isLoading = false;
+            this.groups = groups.sort(function comparator(a, b) { return b.createdTs - a.createdTs });
+            if (this.groups.length > 0) {
+                this.memberService.list(this.groups[0].id).then(this.drawMap.bind(this), this.handleMembersFailure.bind(this));
+            } else {
+                this.isLoading = false;
+            }
         }, () => {
             this.handleGroupsFailure();
             this.isLoading = false;
@@ -35,5 +47,47 @@ export class GroupsComponent implements OnInit {
     }
     handleGroupsFailure() {
         this.notificationService.notify('Error: Could not retrieve groups');
+    }
+    handleMembersFailure() {
+        this.notificationService.notify('Error: Could not retrieve group members');
+    }
+    drawMap(members: Member[]) {
+        let avg = { lat: 0, lng: 0 },
+            count = 0,
+            randomLocation = this.locationService.getRandomKnownLocation(),
+            map = new google.maps.Map(document.querySelector('#map'), {
+                disableDoubleClickZoom: true,
+                draggable: false,
+                mapTypeControlOptions: {
+                    mapTypeIds: []
+                },
+                panControl: false,
+                rotateControl: false,
+                scaleControl: false,
+                scrollwheel: false,
+                streetViewControl: false,
+                zoomControl: false
+            });
+
+        /* calculate the average */
+        members.forEach(function iterator(member) {
+            avg.lat += member.lat;
+            avg.lng += member.lng;
+            count++;
+        });
+        if (count > 0) {
+            let bounds = new google.maps.LatLngBounds();
+            avg.lat /= count;
+            avg.lng /= count;
+            bounds.extend(new google.maps.Marker({
+                position: new google.maps.LatLng(avg.lat, avg.lng),
+                map: map
+            }).getPosition());
+            map.fitBounds(bounds);
+        } else {
+            map.setCenter(new google.maps.LatLng(randomLocation.lat, randomLocation.lng));
+            map.setZoom(randomLocation.zoom);
+        }
+        this.isLoading = false;
     }
 }
