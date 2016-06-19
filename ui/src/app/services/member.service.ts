@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Member } from './member';
+import { Member } from '../domain/member';
 import { Http, Headers } from '@angular/http';
-import './rxjs-operations';
+import '../rxjs-operations';
 
 @Injectable()
 export class MemberService {

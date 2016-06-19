@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { User } from './user';
+import { User } from '../domain/user';
 import { Http } from '@angular/http';
-import './rxjs-operations';
+import '../rxjs-operations';
 
 @Injectable()
 export class UserService {

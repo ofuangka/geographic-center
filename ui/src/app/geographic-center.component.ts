@@ -12,12 +12,13 @@ import { Routes, Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/ro
 import { GroupsComponent } from './groups/groups.component';
 import { AboutComponent } from './about/about.component';
 import { GroupDetailsComponent } from './group-details/group-details.component';
-import { UserService } from './user.service';
-import { User } from './user';
-import { GroupService } from './group.service';
-import { Notifee } from './notifee';
-import { NotificationService } from './notification.service';
-import { NameService } from './name.service';
+import { UserService } from './services/user.service';
+import { User } from './domain/user';
+import { BrowserService } from './services/browser.service';
+import { GroupService } from './services/group.service';
+import { Observer } from './support/observer';
+import { NotificationService } from './services/notification.service';
+import { NameService } from './services/name.service';
 
 @Component({
     moduleId: module.id,
@@ -40,7 +41,8 @@ import { NameService } from './name.service';
         UserService,
         GroupService,
         NotificationService,
-        NameService
+        NameService,
+        BrowserService
     ]
 })
 @Routes([
@@ -48,7 +50,7 @@ import { NameService } from './name.service';
     { path: '/groups', component: GroupsComponent },
     { path: '/', component: AboutComponent }
 ])
-export class GeographicCenterAppComponent implements OnInit, Notifee {
+export class GeographicCenterAppComponent implements OnInit, Observer {
     views: Object[] = [
         { name: 'Groups', description: 'View your group history', icon: 'group', path: '/groups' },
         { name: 'About', description: 'About Geographic Center', icon: 'help', path: '/' }
@@ -65,8 +67,12 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
         private userService: UserService,
         private groupService: GroupService,
         private notificationService: NotificationService,
-        private nameService: NameService) { }
+        private nameService: NameService,
+        private browserService: BrowserService) { }
     ngOnInit() {
+        if (this.browserService.isNotCompatible()) {
+            this.notification = 'Your browser is incompatible';
+        }
         this.notificationService.subscribe(this);
         this.userService.read().then(user => {
             this.username = user.username;
@@ -77,6 +83,7 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
         this.router.navigate([view]);
     }
     createGroup(name: string) {
+
         /* TODO: revisit this because angular2 material form validation isn't straightforward */
         this.isCreatingGroup = true;
         this.groupService.create(name).then((group) => {
@@ -97,5 +104,8 @@ export class GeographicCenterAppComponent implements OnInit, Notifee {
     }
     generateRandom() {
         this.input.value = this.nameService.getRandom();
+    }
+    dismissNotification() {
+        this.notification = '';
     }
 }

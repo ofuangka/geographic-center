@@ -16,9 +16,5 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
     mvn clean install appengine:update
 
 ## To dos
-* Dismissable notifications
-* Websocket failure detection
 * Message sequencing
-* Browser version message
 * Show static map for topmost group
-* Add better favicon

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Notifee } from './notifee';
+import { Observer } from '../support/observer';
 
 @Injectable()
 export class NotificationService {
-    subscribers: Notifee[] = [];
+    subscribers: Observer[] = [];
     constructor() { }
-    subscribe(notifee: Notifee) {
-        this.subscribers.push(notifee);
+    subscribe(observer: Observer) {
+        this.subscribers.push(observer);
     }
     notify(message: string) {
         this.subscribers.forEach(subscriber => subscriber.notify(message));

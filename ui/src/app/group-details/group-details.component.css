@@ -17,9 +17,11 @@ md-slide-toggle {
     height: 300px;
     margin-bottom: 24px;
 }
+
 .actions-container {
     text-align: center;
 }
+
 .disclaimer {
     padding: 0 20px;
 }

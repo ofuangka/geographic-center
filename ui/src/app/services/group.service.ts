@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Group } from './group';
+import { Group } from '../domain/group';
 import { Http, Headers } from '@angular/http';
-import './rxjs-operations';
+import '../rxjs-operations';
 
 @Injectable()
 export class GroupService {

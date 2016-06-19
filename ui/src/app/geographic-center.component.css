@@ -42,3 +42,7 @@ md-sidenav-layout {
 md-hint {
   display: block;
 }
+
+.close {
+  margin-right: 10px;
+}
