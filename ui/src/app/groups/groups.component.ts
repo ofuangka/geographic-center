@@ -67,7 +67,8 @@ export class GroupsComponent implements OnInit {
                 scrollwheel: false,
                 streetViewControl: false,
                 zoomControl: false
-            });
+            }),
+            defaultZoom = 11;
 
         /* calculate the average */
         members.forEach(function iterator(member) {
@@ -76,14 +77,15 @@ export class GroupsComponent implements OnInit {
             count++;
         });
         if (count > 0) {
-            let bounds = new google.maps.LatLngBounds();
             avg.lat /= count;
             avg.lng /= count;
-            bounds.extend(new google.maps.Marker({
-                position: new google.maps.LatLng(avg.lat, avg.lng),
+            let avgLatLng = new google.maps.LatLng(avg.lat, avg.lng);
+            new google.maps.Marker({
+                position: avgLatLng,
                 map: map
-            }).getPosition());
-            map.fitBounds(bounds);
+            });
+            map.setCenter(avgLatLng);
+            map.setZoom(defaultZoom);
         } else {
             map.setCenter(new google.maps.LatLng(randomLocation.lat, randomLocation.lng));
             map.setZoom(randomLocation.zoom);

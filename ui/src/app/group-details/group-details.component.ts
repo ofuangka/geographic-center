@@ -62,12 +62,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
         this.memberService.list(groupId).then(members => {
             let thirtySeconds = 30000;
-            this.members = members.sort(function (a, b) { return b.lastUpdatedTs - a.lastUpdatedTs; });
 
             /* all members should be enabled initially */
-            this.members.forEach(member => {
+            members.forEach(member => {
                 this.enabledMembers[member.id] = true;
             });
+
+            this.members = members.sort(function (a, b) { return b.lastUpdatedTs - a.lastUpdatedTs; });
 
             this.drawMap();
 
@@ -130,8 +131,11 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             count++;
         });
 
-        /* add the center marker */
         if (count > 0) {
+            /* re-center the map */
+            map.fitBounds(bounds);
+
+            /* calculate the center */
             center.lat /= count;
             center.lng /= count;
 
@@ -141,13 +145,11 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                     <h3>Geographic Center</h3>
                     <p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>
                     <p><a href="https://www.google.com/maps/?q=restaurants&sll=${center.lat},${center.lng}" target="_blank">Search nearby...</a></p>`
-            }).open(map,
-                new google.maps.Marker({
-                    position: new google.maps.LatLng(center.lat, center.lng),
-                    map: map,
-                    animation: google.maps.Animation.DROP
-                }));
-            map.fitBounds(bounds);
+            }).open(map, new google.maps.Marker({
+                position: new google.maps.LatLng(center.lat, center.lng),
+                map: map,
+                animation: google.maps.Animation.DROP
+            }));
         } else {
 
             /* set some default center */
