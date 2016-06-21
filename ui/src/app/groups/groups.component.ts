@@ -36,10 +36,9 @@ export class GroupsComponent implements OnInit {
         this.groupService.list().then(groups => {
             this.groups = groups.sort(function comparator(a, b) { return b.createdTs - a.createdTs });
             if (this.groups.length > 0) {
-                this.memberService.list(this.groups[0].id).then((members) => { this.isLoading = false; this.drawMap(members); }, this.handleMembersFailure.bind(this));
-            } else {
-                this.isLoading = false;
+                this.memberService.list(this.groups[0].id).then((members) => { this.drawMap(members); }, this.handleMembersFailure.bind(this));
             }
+            this.isLoading = false;
         }, () => {
             this.handleGroupsFailure();
             this.isLoading = false;
