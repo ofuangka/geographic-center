@@ -36,7 +36,7 @@ export class GroupsComponent implements OnInit {
         this.groupService.list().then(groups => {
             this.groups = groups.sort(function comparator(a, b) { return b.createdTs - a.createdTs });
             if (this.groups.length > 0) {
-                this.memberService.list(this.groups[0].id).then(this.drawMap.bind(this), this.handleMembersFailure.bind(this));
+                this.memberService.list(this.groups[0].id).then((members) => { this.isLoading = false; this.drawMap(members); }, this.handleMembersFailure.bind(this));
             } else {
                 this.isLoading = false;
             }
@@ -52,6 +52,7 @@ export class GroupsComponent implements OnInit {
         this.notificationService.notify('Error: Could not retrieve group members');
     }
     drawMap(members: Member[]) {
+        this.isLoading = false;
         let avg = { lat: 0, lng: 0 },
             count = 0,
             randomLocation = this.locationService.getRandomKnownLocation(),
@@ -90,6 +91,5 @@ export class GroupsComponent implements OnInit {
             map.setCenter(new google.maps.LatLng(randomLocation.lat, randomLocation.lng));
             map.setZoom(randomLocation.zoom);
         }
-        this.isLoading = false;
     }
 }
