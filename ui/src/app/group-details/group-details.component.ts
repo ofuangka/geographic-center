@@ -139,17 +139,21 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             center.lat /= count;
             center.lng /= count;
 
-            /* add the info window */
-            new google.maps.InfoWindow({
+            /* drop the marker */
+            let marker = new google.maps.Marker({
+                position: new google.maps.LatLng(center.lat, center.lng),
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+
+            /* add the info window after a delay */
+            let infoWindow = new google.maps.InfoWindow({
                 content: `
                     <h3>Geographic Center</h3>
                     <p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>
                     <p><a href="https://www.google.com/maps/?q=restaurants&sll=${center.lat},${center.lng}" target="_blank">Search nearby...</a></p>`
-            }).open(map, new google.maps.Marker({
-                position: new google.maps.LatLng(center.lat, center.lng),
-                map: map,
-                animation: google.maps.Animation.DROP
-            }));
+            });
+            setTimeout(infoWindow.open.bind(infoWindow, map, marker), 250);
         } else {
 
             /* set some default center */
