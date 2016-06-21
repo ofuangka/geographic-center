@@ -4,7 +4,7 @@
 <md-card *ngIf="!isLoading && (!groups || groups.length === 0)">
     <md-card-content>You currently have no groups :(</md-card-content>
 </md-card>
-<div class="card-container" *ngIf="groups && groups.length > 0">
+<div class="card-container" *ngIf="!isLoading && groups && groups.length > 0">
     <md-card *ngFor="let group of groups; let $first = first">
         <div id="map" *ngIf="$first"></div>
         <md-card-title><a [routerLink]="['/groups', group.id]">{{group.name}}</a></md-card-title>
