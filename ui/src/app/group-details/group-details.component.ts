@@ -134,28 +134,27 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         });
 
         if (count > 0) {
-            /* re-center the map */
-            map.fitBounds(bounds);
 
             /* calculate the center */
             center.lat /= count;
             center.lng /= count;
 
-            /* drop the marker */
-            let marker = new google.maps.Marker({
-                position: new google.maps.LatLng(center.lat, center.lng),
-                map: map,
-                animation: google.maps.Animation.DROP
-            });
+            /* re-center the map */
+            map.fitBounds(bounds);
 
-            /* add the info window after a delay */
-            let infoWindow = new google.maps.InfoWindow({
-                content: `
+            /* drop the center pin after the bounds have settled */
+            google.maps.event.addListenerOnce(map, 'idle', function dropCenterMarker() {
+                new google.maps.InfoWindow({
+                    content: `
                     <h3>Geographic Center</h3>
                     <p>(${formatDecimal(center.lat)}, ${formatDecimal(center.lng)})</p>
                     <p><a href="https://www.google.com/maps/?q=restaurants&sll=${center.lat},${center.lng}" target="_blank">Search nearby...</a></p>`
+                }).open(map, new google.maps.Marker({
+                    position: new google.maps.LatLng(center.lat, center.lng),
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                }));
             });
-            setTimeout(infoWindow.open.bind(infoWindow, map, marker), 250);
         } else {
 
             /* set some default center */
