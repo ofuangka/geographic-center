@@ -16,4 +16,3 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
     mvn clean install appengine:update
 
 ## To dos
-* Message sequencing and error detection
