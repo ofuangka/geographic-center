@@ -9,7 +9,7 @@ import { DecimalPipe } from '@angular/common';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Group } from '../domain/group';
 import { GroupService } from '../services/group.service';
-import { RouteSegment } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MemberService } from '../services/member.service';
 import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { LocationService } from '../services/location.service';
@@ -47,7 +47,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     ping: Subscription;
     self: User;
     constructor(private groupService: GroupService,
-        private routeSegment: RouteSegment,
+        private route: ActivatedRoute,
         private memberService: MemberService,
         private locationService: LocationService,
         private userService: UserService,
@@ -56,7 +56,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isLoading = true;
 
-        let groupId = this.routeSegment.getParam('groupId');
+        let groupId = this.route.snapshot.params['groupId'];
 
         this.groupService.read(groupId).then(group => this.group = group, this.handleGroupFailure.bind(this));
 
@@ -166,7 +166,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         }
         this.isSendingLocation = true;
         this.locationService.getCurrentPosition().then(coords => {
-            let groupId = this.routeSegment.getParam('groupId');
+            let groupId = this.route.snapshot.params['groupId'];
             this.memberService.savePosition(groupId, coords.latitude, coords.longitude).then(
                 (newMember) => {
                     if (isConnectionReady(this.messageConnection)) {

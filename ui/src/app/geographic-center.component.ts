@@ -8,10 +8,6 @@ import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { MD_INPUT_DIRECTIVES, MdInput } from '@angular2-material/input';
 import { COMMON_DIRECTIVES } from '@angular/common';
-import { Routes, Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router';
-import { GroupsComponent } from './groups/groups.component';
-import { AboutComponent } from './about/about.component';
-import { GroupDetailsComponent } from './group-details/group-details.component';
 import { UserService } from './services/user.service';
 import { User } from './domain/user';
 import { BrowserService } from './services/browser.service';
@@ -21,6 +17,7 @@ import { NotificationService } from './services/notification.service';
 import { NameService } from './services/name.service';
 import { MemberService } from './services/member.service';
 import { LocationService } from './services/location.service';
+import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -49,11 +46,6 @@ import { LocationService } from './services/location.service';
         LocationService
     ]
 })
-@Routes([
-    { path: '/groups/:groupId', component: GroupDetailsComponent },
-    { path: '/groups', component: GroupsComponent },
-    { path: '/', component: AboutComponent }
-])
 export class GeographicCenterAppComponent implements OnInit, Observer {
     views: Object[] = [
         { name: 'Groups', description: 'View your group history', icon: 'group', path: '/groups' },
