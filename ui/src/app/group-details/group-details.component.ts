@@ -19,6 +19,7 @@ import { NotificationService } from '../services/notification.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ReconnectingWebSocket } from '../support/reconnecting-websocket';
 import { Location } from '../domain/location';
+import { Message } from '../domain/message'; 
 
 @Component({
     moduleId: module.id,
@@ -46,6 +47,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     messageConnection: ReconnectingWebSocket;
     ping: Subscription;
     self: User;
+    lastSequenceSeen: number;
     constructor(private groupService: GroupService,
         private route: ActivatedRoute,
         private memberService: MemberService,
@@ -212,8 +214,16 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     handleMemberFailure() {
         this.notificationService.notify('Error: Could not retrieve group members');
     }
-    handleMessage(message) {
-        let newMember: Member = JSON.parse(message.data);
+    handleMessage(rawMessage) {
+        let message: Message = JSON.parse(rawMessage.data);
+        let sequence = message.sequence;
+        let newMember = message.member;
+
+        if (typeof(this.lastSequenceSeen) === 'undefined') {
+            this.lastSequenceSeen = sequence;
+        } else if (sequence - this.lastSequenceSeen > 1) {
+            this.notificationService.notify('Warning: Message loss detected. Refresh the page');
+        }
 
         /* replace the old member if it already exists */
         var memberExists = false;
