@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import com.google.appengine.repackaged.com.google.api.client.util.IOUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Workaround because Google App Engine doesn't let you handle 404s, and Angular
