@@ -41,7 +41,7 @@
                     <md-checkbox #newGroupIsPublic>Make public</md-checkbox>
                 </div>
                 <div class="actions-container">
-                    <button md-raised-button color="accent" (click)="createGroup(newGroupName.value, newGroupIsPublic.value)"
+                    <button md-raised-button color="accent" (click)="createGroup(newGroupName.value, newGroupIsPublic.checked)"
                         [disabled]="newGroupName.empty || isCreatingGroup">{{isCreatingGroup ? 'Saving...' : 'Save'}}</button>
                 </div>
             </md-card-content>
