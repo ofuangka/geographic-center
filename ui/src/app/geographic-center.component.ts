@@ -49,7 +49,7 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 export class GeographicCenterAppComponent implements OnInit, Observer {
     views: Object[] = [
         { name: 'Groups', description: 'View your group history', icon: 'group', path: '/groups' },
-        { name: 'About', description: 'About Geographic Center', icon: 'help', path: '/' }
+        { name: 'About', description: 'About Geographic Center', icon: 'help', path: '/about' }
     ];
     formShowing = false;
     username: string;
