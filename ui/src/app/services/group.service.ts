@@ -12,9 +12,10 @@ export class GroupService {
     read(groupId: string): Promise<Group> {
         return this.http.get(`/api/groups/${groupId}`).toPromise().then(response => response.json());
     }
-    create(groupName: string): Promise<Group> {
+    create(groupName: string, isPublic: boolean): Promise<Group> {
         return this.http.post(`/api/groups`, JSON.stringify({
-            name: groupName
+            name: groupName,
+            public: isPublic
         }), {
             headers: new Headers({
                 'Content-Type': 'application/json'

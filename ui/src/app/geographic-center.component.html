@@ -30,13 +30,20 @@
         <md-card>
             <md-card-title>Create a new group</md-card-title>
             <md-card-content>
-                <div class="input-container">
+                <div class="name-container">
                     <md-input placeholder="Name" #newGroupName maxLength="50" required="true"></md-input>
                     <button md-mini-fab (click)="generateRandom()"><md-icon>casino</md-icon></button>
                 </div>
-                <md-hint>{{newGroupName.characterCount}} / 50 characters</md-hint>
-                <button class="pull-right" md-raised-button color="accent" (click)="createGroup(newGroupName.value)" [disabled]="newGroupName.empty || isCreatingGroup">{{isCreatingGroup ? 'Saving...' : 'Save'}}</button>
-                <div class="clearfix"></div>
+                <div class="hint-container">
+                    <md-hint>{{newGroupName.characterCount}} / 50 characters</md-hint>
+                </div>
+                <div class="public-container">
+                    <md-checkbox #newGroupIsPublic>Make public</md-checkbox>
+                </div>
+                <div class="actions-container">
+                    <button md-raised-button color="accent" (click)="createGroup(newGroupName.value, newGroupIsPublic.value)"
+                        [disabled]="newGroupName.empty || isCreatingGroup">{{isCreatingGroup ? 'Saving...' : 'Save'}}</button>
+                </div>
             </md-card-content>
         </md-card>
     </div>

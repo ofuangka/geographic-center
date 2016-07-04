@@ -13,4 +13,6 @@ public interface GroupDao {
 	Group create(Group g);
 	
 	List<Group> all();
+	
+	List<Group> getPublic();
 }

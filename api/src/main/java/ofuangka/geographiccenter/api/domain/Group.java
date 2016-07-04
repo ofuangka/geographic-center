@@ -25,6 +25,8 @@ public class Group extends HasId {
 
 	@Null
 	private Date createdTs;
+	
+	private boolean publick;
 
 	public void setName(String name) {
 		this.name = name;
@@ -59,5 +61,13 @@ public class Group extends HasId {
 	@Override
 	public int hashCode() {
 		return id.hashCode();
+	}
+	
+	public boolean isPublic() {
+		return publick;
+	}
+	
+	public void setPublic(boolean publick) {
+		this.publick = publick;
 	}
 }

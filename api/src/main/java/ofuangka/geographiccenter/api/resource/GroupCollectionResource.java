@@ -57,6 +57,9 @@ public class GroupCollectionResource {
 				set.add(groupDao.get(member.getGroupId()));
 			}
 
+			// add all the public groups
+			set.addAll(groupDao.getPublic());
+
 			return new ArrayList<Group>(set);
 		} else {
 			throw new UnsupportedOperationException("Can only request own groups");

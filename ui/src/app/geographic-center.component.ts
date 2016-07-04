@@ -18,6 +18,7 @@ import { NameService } from './services/name.service';
 import { MemberService } from './services/member.service';
 import { LocationService } from './services/location.service';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+import { MD_CHECKBOX_DIRECTIVES } from '@angular2-material/checkbox';
 
 @Component({
     moduleId: module.id,
@@ -33,7 +34,8 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
         MD_CARD_DIRECTIVES,
         MD_INPUT_DIRECTIVES,
         COMMON_DIRECTIVES,
-        ROUTER_DIRECTIVES
+        ROUTER_DIRECTIVES,
+        MD_CHECKBOX_DIRECTIVES
     ],
     providers: [
         MdIconRegistry,
@@ -78,11 +80,11 @@ export class GeographicCenterAppComponent implements OnInit, Observer {
     showView(view: string) {
         this.router.navigate([view]);
     }
-    createGroup(name: string) {
+    createGroup(name: string, isPublic: boolean) {
 
         /* TODO: revisit this because angular2 material form validation isn't straightforward */
         this.isCreatingGroup = true;
-        this.groupService.create(name).then((group) => {
+        this.groupService.create(name, isPublic).then((group) => {
             this.isCreatingGroup = false;
             this.formShowing = false;
             this.router.navigate(['/groups', group.id]);

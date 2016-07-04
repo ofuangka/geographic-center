@@ -22,6 +22,7 @@ public class GoogleGroupDao extends GoogleDatastoreDao<Group> implements GroupDa
 	private static final String KEY_NAME = "name";
 	private static final String KEY_CREATED_BY = "createdBy";
 	private static final String KEY_CREATED_TS = "createdTs";
+	private static final String KEY_PUBLIC = "public";
 
 	private static GoogleDatastoreEntityMapper<Group> groupMapper = new GoogleDatastoreEntityMapper<Group>() {
 
@@ -32,6 +33,7 @@ public class GoogleGroupDao extends GoogleDatastoreDao<Group> implements GroupDa
 			ret.setName((String) e.getProperty(KEY_NAME));
 			ret.setCreatedBy((String) e.getProperty(KEY_CREATED_BY));
 			ret.setCreatedTs((Date) e.getProperty(KEY_CREATED_TS));
+			ret.setPublic((boolean) e.getProperty(KEY_PUBLIC));
 			return ret;
 		}
 
@@ -40,6 +42,7 @@ public class GoogleGroupDao extends GoogleDatastoreDao<Group> implements GroupDa
 			to.setProperty(KEY_NAME, from.getName());
 			to.setProperty(KEY_CREATED_BY, from.getCreatedBy());
 			to.setProperty(KEY_CREATED_TS, from.getCreatedTs());
+			to.setProperty(KEY_PUBLIC, from.isPublic());
 		}
 	};
 
@@ -58,6 +61,13 @@ public class GoogleGroupDao extends GoogleDatastoreDao<Group> implements GroupDa
 	@Override
 	protected String getKind() {
 		return KIND_GROUP;
+	}
+	
+	@Override
+	public List<Group> getPublic() {
+		Query q = new Query(KIND_GROUP);
+		q.setFilter(new FilterPredicate(KEY_PUBLIC, FilterOperator.EQUAL, true));
+		return groupMapper.map(getDatastore().prepare(q).asIterable());
 	}
 
 }

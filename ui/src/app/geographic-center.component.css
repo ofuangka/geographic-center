@@ -22,21 +22,25 @@ md-sidenav-layout {
   flex-grow: 1;
 }
 
-.pull-right {
-  float: right;
-}
-
-.input-container {
+.name-container {
   display: flex;
 }
 
-.input-container > md-input {
+.name-container > md-input {
   flex-grow: 1;
   margin-right: 8px;
 }
 
-.clearfix {
-  clear: both;
+.hint-container {
+  margin-bottom: 16px;
+}
+
+.public-container {
+  margin-bottom: 16px;
+}
+
+.actions-container {
+  text-align: right;
 }
 
 md-hint {
