@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { GroupService } from '../services/group.service';
@@ -22,9 +22,12 @@ import { LocationService } from '../services/location.service';
         MD_ICON_DIRECTIVES
     ]
 })
-export class GroupsComponent implements OnInit {
+export class GroupsComponent implements OnInit, OnDestroy {
     groups: Group[];
     isLoading: boolean;
+    mapWidth: number;
+    resizeEventListener: EventListener;
+    firstMembers: Member[];
     constructor(
         private groupService: GroupService,
         private notificationService: NotificationService,
@@ -36,7 +39,12 @@ export class GroupsComponent implements OnInit {
         this.groupService.list().then(groups => {
             this.groups = groups.sort(function comparator(a, b) { return b.createdTs - a.createdTs });
             if (this.groups.length > 0) {
-                this.memberService.list(this.groups[0].id).then((members) => { this.drawMap(members); }, this.handleMembersFailure.bind(this));
+                this.memberService.list(this.groups[0].id).then((members) => {
+                    this.firstMembers = members; 
+                    this.drawMap(); 
+                    this.resizeEventListener = this.handleResize.bind(this);
+                    window.addEventListener('resize', this.resizeEventListener) 
+                }, this.handleMembersFailure.bind(this));
             }
             this.isLoading = false;
         }, () => {
@@ -50,12 +58,15 @@ export class GroupsComponent implements OnInit {
     handleMembersFailure() {
         this.notificationService.notify('Error: Could not retrieve group members');
     }
-    drawMap(members: Member[]) {
+    drawMap() {
+        let members = this.firstMembers;
         this.isLoading = false;
+        let mapEl = document.getElementById('map');
+        this.mapWidth = mapEl.offsetWidth;
         let avg = { lat: 0, lng: 0 },
             count = 0,
             randomLocation = this.locationService.getRandomKnownLocation(),
-            map = new google.maps.Map(document.querySelector('#map'), {
+            map = new google.maps.Map(mapEl, {
                 disableDoubleClickZoom: true,
                 draggable: false,
                 mapTypeControlOptions: {
@@ -90,5 +101,14 @@ export class GroupsComponent implements OnInit {
             map.setCenter(new google.maps.LatLng(randomLocation.lat, randomLocation.lng));
             map.setZoom(randomLocation.zoom);
         }
+    }
+    handleResize(event: UIEvent) {
+        let mapEl = document.getElementById('map');
+        if (this.mapWidth !== mapEl.offsetWidth) {
+            this.drawMap();
+        }
+    }
+    ngOnDestroy() {
+        window.removeEventListener('resize', this.resizeEventListener);
     }
 }

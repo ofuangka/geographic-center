@@ -48,6 +48,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     ping: Subscription;
     self: User;
     lastSequenceSeen: number;
+    mapWidth: number;
+    resizeEventListener: EventListener;
     constructor(private groupService: GroupService,
         private route: ActivatedRoute,
         private memberService: MemberService,
@@ -101,6 +103,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                 this.handleUserInfoFailure();
                 this.isSendingLocation = false;
             });
+            
+            this.resizeEventListener = this.handleResize.bind(this);
+            window.addEventListener('resize', this.resizeEventListener);
 
         }, () => {
             this.handleMemberFailure();
@@ -108,17 +113,19 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         });
     }
     drawMap() {
+        let mapEl = document.getElementById('map');
         let center = { lat: 0, lng: 0 },
             count = 0,
             randomLocation = this.locationService.getRandomKnownLocation(),
             formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat),
             bounds = new google.maps.LatLngBounds(),
-            map = new google.maps.Map(document.getElementById('map'), {
+            map = new google.maps.Map(mapEl, {
                 mapTypeControlOptions: {
                     mapTypeIds: []
                 },
                 streetViewControl: false
             });
+        this.mapWidth = mapEl.offsetWidth;
         this.members.filter(member => this.enabledMembers[member.id]).forEach(member => {
 
             /* draw the Marker and include it in the bounds */
@@ -192,19 +199,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     handleUpdateFailure() {
         this.notificationService.notify('Error: Could not save location');
     }
-    onMessageReceived(newValue: Member) {
-        for (let i = 0, len = this.members.length; i < len; i++) {
-            if (this.members[i].id === newValue.id) {
-                this.members.splice(i, 1, newValue);
-
-                /* make sure to enable new members by default */
-                if (!this.enabledMembers.hasOwnProperty(newValue.id)) {
-                    this.enabledMembers[newValue.id] = true;
-                }
-                break;
-            }
-        }
-    }
     handleUserInfoFailure() {
         this.notificationService.notify('Error: Could not retrieve user data');
     }
@@ -244,6 +238,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy() {
         this.ping.unsubscribe();
+        window.removeEventListener('resize', this.resizeEventListener);
     }
     handleWsSendError(error) {
         this.notificationService.notify(`Error: WebSocket send failure - ${error.message}`)
@@ -255,6 +250,12 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             this.handleWsSendError(error);
         } finally {
             this.isSendingLocation = false;
+        }
+    }
+    handleResize(ev: UIEvent) {
+        let mapEl = document.getElementById('map');
+        if (this.mapWidth !== mapEl.offsetWidth) {
+            this.drawMap();
         }
     }
 }
