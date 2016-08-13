@@ -1,14 +1,13 @@
 import {
-  beforeEachProviders,
-  it,
-  describe,
-  expect,
+  addProviders,
   inject
 } from '@angular/core/testing';
 import { UserService } from './user.service';
 
 describe('User Service', () => {
-  beforeEachProviders(() => [UserService]);
+  beforeEach(() => {
+    addProviders([UserService]);
+  });
 
   it('should ...',
     inject([UserService], (service: UserService) => {

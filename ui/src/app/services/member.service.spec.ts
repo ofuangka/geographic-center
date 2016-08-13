@@ -1,14 +1,13 @@
 import {
-  beforeEachProviders,
-  it,
-  describe,
-  expect,
+  addProviders,
   inject
 } from '@angular/core/testing';
 import { MemberService } from './member.service';
 
 describe('Member Service', () => {
-  beforeEachProviders(() => [MemberService]);
+  beforeEach(() => {
+    addProviders([MemberService]);
+  });
 
   it('should ...',
       inject([MemberService], (service: MemberService) => {

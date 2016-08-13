@@ -1,12 +1,9 @@
 import {
-  beforeEach,
-  beforeEachProviders,
-  describe,
-  expect,
-  it,
+  addProviders,
   inject,
+  ComponentFixture,
+  TestComponentBuilder
 } from '@angular/core/testing';
-import { ComponentFixture, TestComponentBuilder } from '@angular/compiler/testing';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { AboutComponent } from './about.component';
@@ -14,8 +11,8 @@ import { AboutComponent } from './about.component';
 describe('Component: About', () => {
   let builder: TestComponentBuilder;
 
-  beforeEachProviders(() => [AboutComponent]);
   beforeEach(inject([TestComponentBuilder], function (tcb: TestComponentBuilder) {
+    addProviders([AboutComponent]);
     builder = tcb;
   }));
 

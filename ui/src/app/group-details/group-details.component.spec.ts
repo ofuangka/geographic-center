@@ -1,12 +1,9 @@
 import {
-  beforeEach,
-  beforeEachProviders,
-  describe,
-  expect,
-  it,
+  addProviders,
   inject,
+  ComponentFixture,
+  TestComponentBuilder
 } from '@angular/core/testing';
-import { ComponentFixture, TestComponentBuilder } from '@angular/compiler/testing';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { GroupDetailsComponent } from './group-details.component';
@@ -14,8 +11,8 @@ import { GroupDetailsComponent } from './group-details.component';
 describe('Component: GroupDetails', () => {
   let builder: TestComponentBuilder;
 
-  beforeEachProviders(() => [GroupDetailsComponent]);
   beforeEach(inject([TestComponentBuilder], function (tcb: TestComponentBuilder) {
+    addProviders([GroupDetailsComponent]);
     builder = tcb;
   }));
 

@@ -1,14 +1,13 @@
 import {
-  beforeEachProviders,
-  it,
-  describe,
-  expect,
+  addProviders,
   inject
 } from '@angular/core/testing';
 import { LocationService } from './location.service';
 
 describe('Location Service', () => {
-  beforeEachProviders(() => [LocationService]);
+  beforeEach(() => {
+    addProviders([LocationService]);
+  });
 
   it('should ...',
       inject([LocationService], (service: LocationService) => {
