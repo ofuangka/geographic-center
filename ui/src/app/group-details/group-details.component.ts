@@ -1,9 +1,4 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
-import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
-import { MD_SLIDE_TOGGLE_DIRECTIVES } from '@angular2-material/slide-toggle';
-import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 import { Member } from '../domain/member';
 import { DecimalPipe } from '@angular/common';
 import { ROUTER_DIRECTIVES } from '@angular/router';
@@ -11,7 +6,6 @@ import { Group } from '../domain/group';
 import { GroupService } from '../services/group.service';
 import { ActivatedRoute } from '@angular/router';
 import { MemberService } from '../services/member.service';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import { LocationService } from '../services/location.service';
 import { UserService } from '../services/user.service';
 import { User } from '../domain/user';
@@ -27,13 +21,7 @@ import { Message } from '../domain/message';
     templateUrl: 'group-details.component.html',
     styleUrls: ['group-details.component.css'],
     directives: [
-        MD_CARD_DIRECTIVES,
-        MD_LIST_DIRECTIVES,
-        MD_PROGRESS_CIRCLE_DIRECTIVES,
-        MD_SLIDE_TOGGLE_DIRECTIVES,
-        MD_ICON_DIRECTIVES,
-        ROUTER_DIRECTIVES,
-        MD_BUTTON_DIRECTIVES
+        ROUTER_DIRECTIVES
     ],
     providers: [ChangeDetectorRef]
 })

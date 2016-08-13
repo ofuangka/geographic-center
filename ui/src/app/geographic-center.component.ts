@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdToolbar } from '@angular2-material/toolbar';
-import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
-import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
-import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar';
-import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
-import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { MD_INPUT_DIRECTIVES, MdInput } from '@angular2-material/input';
+import { MdToolbarModule } from '@angular2-material/toolbar';
+import { MdSidenavModule } from '@angular2-material/sidenav';
+import { MdListModule } from '@angular2-material/list';
+import { MdIconModule, MdIconRegistry } from '@angular2-material/icon';
+import { MdButtonModule } from '@angular2-material/button';
+import { MdCardModule } from '@angular2-material/card';
+import { MdInputModule, MdInput } from '@angular2-material/input';
 import { COMMON_DIRECTIVES } from '@angular/common';
 import { UserService } from './services/user.service';
 import { User } from './domain/user';
@@ -26,13 +25,6 @@ import { MD_CHECKBOX_DIRECTIVES } from '@angular2-material/checkbox';
     templateUrl: 'geographic-center.component.html',
     styleUrls: ['geographic-center.component.css'],
     directives: [
-        MD_SIDENAV_DIRECTIVES,
-        MD_LIST_DIRECTIVES,
-        MD_ICON_DIRECTIVES,
-        MD_BUTTON_DIRECTIVES,
-        MD_TOOLBAR_DIRECTIVES,
-        MD_CARD_DIRECTIVES,
-        MD_INPUT_DIRECTIVES,
         COMMON_DIRECTIVES,
         ROUTER_DIRECTIVES,
         MD_CHECKBOX_DIRECTIVES

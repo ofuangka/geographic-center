@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { GroupService } from '../services/group.service';
 import { Group } from '../domain/group';
-import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle';
-import { MD_ICON_DIRECTIVES } from '@angular2-material/icon';
 import { NotificationService } from '../services/notification.service';
 import { MemberService } from '../services/member.service';
 import { Member } from '../domain/member';
@@ -16,10 +13,7 @@ import { LocationService } from '../services/location.service';
     templateUrl: 'groups.component.html',
     styleUrls: ['groups.component.css'],
     directives: [
-        MD_CARD_DIRECTIVES,
-        ROUTER_DIRECTIVES,
-        MD_PROGRESS_CIRCLE_DIRECTIVES,
-        MD_ICON_DIRECTIVES
+        ROUTER_DIRECTIVES
     ]
 })
 export class GroupsComponent implements OnInit, OnDestroy {
