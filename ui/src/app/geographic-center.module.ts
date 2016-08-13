@@ -18,6 +18,7 @@ import { MdInputModule } from '@angular2-material/input';
 import { MdTabsModule } from '@angular2-material/tabs';
 import { MdProgressCircleModule } from '@angular2-material/progress-circle';
 import { MdSlideToggleModule } from '@angular2-material/slide-toggle';
+import { MdCheckboxModule } from '@angular2-material/checkbox';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { MdSlideToggleModule } from '@angular2-material/slide-toggle';
     MdTabsModule,
     MdProgressCircleModule,
     MdSlideToggleModule,
+    MdCheckboxModule,
     routing
   ],
   declarations: [GeographicCenterAppComponent, GroupDetailsComponent, GroupsComponent, AboutComponent],

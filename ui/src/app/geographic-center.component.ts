@@ -1,11 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdToolbarModule } from '@angular2-material/toolbar';
-import { MdSidenavModule } from '@angular2-material/sidenav';
-import { MdListModule } from '@angular2-material/list';
-import { MdIconModule, MdIconRegistry } from '@angular2-material/icon';
-import { MdButtonModule } from '@angular2-material/button';
-import { MdCardModule } from '@angular2-material/card';
-import { MdInputModule, MdInput } from '@angular2-material/input';
+import { MdIconRegistry } from '@angular2-material/icon';
+import { MdInput } from '@angular2-material/input';
 import { COMMON_DIRECTIVES } from '@angular/common';
 import { UserService } from './services/user.service';
 import { User } from './domain/user';
@@ -17,7 +12,6 @@ import { NameService } from './services/name.service';
 import { MemberService } from './services/member.service';
 import { LocationService } from './services/location.service';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
-import { MD_CHECKBOX_DIRECTIVES } from '@angular2-material/checkbox';
 
 @Component({
     moduleId: module.id,
@@ -26,8 +20,7 @@ import { MD_CHECKBOX_DIRECTIVES } from '@angular2-material/checkbox';
     styleUrls: ['geographic-center.component.css'],
     directives: [
         COMMON_DIRECTIVES,
-        ROUTER_DIRECTIVES,
-        MD_CHECKBOX_DIRECTIVES
+        ROUTER_DIRECTIVES
     ],
     providers: [
         MdIconRegistry,
