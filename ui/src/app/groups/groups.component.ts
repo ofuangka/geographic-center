@@ -8,7 +8,6 @@ import { Member } from '../domain/member';
 import { LocationService } from '../services/location.service';
 
 @Component({
-    moduleId: module.id,
     selector: 'app-groups',
     templateUrl: 'groups.component.html',
     styleUrls: ['groups.component.css'],

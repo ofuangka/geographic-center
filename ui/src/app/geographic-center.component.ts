@@ -14,7 +14,6 @@ import { LocationService } from './services/location.service';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-    moduleId: module.id,
     selector: 'geographic-center-app',
     templateUrl: 'geographic-center.component.html',
     styleUrls: ['geographic-center.component.css'],

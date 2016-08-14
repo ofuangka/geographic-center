@@ -12,10 +12,13 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
     cd ui
     npm install
     ng build -prod
-    cd ../api
+    cp -rf src/images/ dist/images/
+    mv dist ../api/src/main/webapp/ui/
+    cd ../api/
     mvn clean install appengine:update
 
 ## To dos
+* figure out why .ember-cli > output-folder stopped working
 * refactor groups and group details map functionality into a service (?)
 * paginate groups
 * filter out public groups

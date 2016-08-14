@@ -16,7 +16,6 @@ import { Location } from '../domain/location';
 import { Message } from '../domain/message'; 
 
 @Component({
-    moduleId: module.id,
     selector: 'app-group-details',
     templateUrl: 'group-details.component.html',
     styleUrls: ['group-details.component.css'],

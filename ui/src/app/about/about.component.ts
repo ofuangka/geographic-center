@@ -3,7 +3,6 @@ import { MdTabGroup } from '@angular2-material/tabs';
 import { NotificationService } from '../services/notification.service';
 
 @Component({
-    moduleId: module.id,
     selector: 'app-about',
     templateUrl: 'about.component.html',
     styleUrls: ['about.component.css']

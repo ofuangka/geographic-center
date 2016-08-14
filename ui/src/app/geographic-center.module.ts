@@ -39,7 +39,7 @@ import { MdCheckboxModule } from '@angular2-material/checkbox';
     MdCheckboxModule,
     routing
   ],
-  declarations: [GeographicCenterAppComponent, GroupDetailsComponent, GroupsComponent, AboutComponent],
+  declarations: [GeographicCenterAppComponent, AboutComponent, GroupsComponent, GroupDetailsComponent],
   bootstrap: [GeographicCenterAppComponent]
 })
 export class GeographicCenterModule { }
