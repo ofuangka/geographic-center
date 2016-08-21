@@ -16,7 +16,9 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 @Component({
     selector: 'geographic-center-app',
     templateUrl: 'geographic-center.component.html',
-    styleUrls: ['geographic-center.component.css'],
+    styleUrls: [
+        'geographic-center.component.css'
+    ],
     directives: [
         COMMON_DIRECTIVES,
         ROUTER_DIRECTIVES

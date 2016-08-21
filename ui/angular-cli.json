@@ -5,9 +5,20 @@
   },
   "apps": [
     {
-      "main": "src/main.ts",
-      "tsconfig": "src/tsconfig.json",
-      "mobile": false
+      "main": "main.ts",
+      "tsconfig": "tsconfig.json",
+      "mobile": false,
+      "assets": "assets",
+      "prefix": "app",
+      "root": "src",
+      "outDir": "../api/src/main/webapp/ui/",
+      "index": "index.html",
+      "styles": "styles.css",
+      "environments": {
+        "source": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts",
+        "dev": "environments/environment.dev.ts"
+      }
     }
   ],
   "addons": [],
@@ -23,8 +34,6 @@
     }
   },
   "defaults": {
-    "prefix": "app",
-    "sourceDir": "src",
     "styleExt": "css",
     "prefixInterfaces": false,
     "lazyRoutePrefix": "+"

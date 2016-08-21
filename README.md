@@ -18,8 +18,7 @@ A Google App Engine/Angular 2 web application that finds the geographic center o
     mvn clean install appengine:update
 
 ## To dos
-* include hammerjs from npm import
-* figure out why .ember-cli > output-folder stopped working
+* fix hack of including material core css
 * refactor groups and group details map functionality into a service (?)
 * paginate groups
 * filter out public groups
