@@ -222,6 +222,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         }
         this.members.unshift(newMember);
         this.changeDetectorRef.detectChanges();
+        this.drawMap();
     }
     ngOnDestroy() {
         this.ping.unsubscribe();
