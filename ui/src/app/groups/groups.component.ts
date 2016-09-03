@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { GroupService } from '../services/group.service';
 import { Group } from '../domain/group';
 import { NotificationService } from '../services/notification.service';
@@ -10,10 +9,7 @@ import { LocationService } from '../services/location.service';
 @Component({
     selector: 'app-groups',
     templateUrl: 'groups.component.html',
-    styleUrls: ['groups.component.css'],
-    directives: [
-        ROUTER_DIRECTIVES
-    ]
+    styleUrls: ['groups.component.css']
 })
 export class GroupsComponent implements OnInit, OnDestroy {
     groups: Group[];

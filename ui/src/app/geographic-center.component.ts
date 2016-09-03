@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdIconRegistry } from '@angular2-material/icon';
 import { MdInput } from '@angular2-material/input';
-import { COMMON_DIRECTIVES } from '@angular/common';
 import { UserService } from './services/user.service';
 import { User } from './domain/user';
 import { BrowserService } from './services/browser.service';
@@ -11,17 +10,13 @@ import { NotificationService } from './services/notification.service';
 import { NameService } from './services/name.service';
 import { MemberService } from './services/member.service';
 import { LocationService } from './services/location.service';
-import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'geographic-center-app',
     templateUrl: 'geographic-center.component.html',
     styleUrls: [
         'geographic-center.component.css'
-    ],
-    directives: [
-        COMMON_DIRECTIVES,
-        ROUTER_DIRECTIVES
     ],
     providers: [
         MdIconRegistry,

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Member } from '../domain/member';
 import { DecimalPipe } from '@angular/common';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Group } from '../domain/group';
 import { GroupService } from '../services/group.service';
 import { ActivatedRoute } from '@angular/router';
@@ -19,9 +18,6 @@ import { Message } from '../domain/message';
     selector: 'app-group-details',
     templateUrl: 'group-details.component.html',
     styleUrls: ['group-details.component.css'],
-    directives: [
-        ROUTER_DIRECTIVES
-    ],
     providers: [ChangeDetectorRef]
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
@@ -104,7 +100,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         let center = { lat: 0, lng: 0 },
             count = 0,
             randomLocation = this.locationService.getRandomKnownLocation(),
-            formatDecimal = (decimal) => new DecimalPipe().transform(decimal, this.decimalFormat),
+            formatDecimal = (decimal) => new DecimalPipe('en_US').transform(decimal, this.decimalFormat),
             bounds = new google.maps.LatLngBounds(),
             map = new google.maps.Map(mapEl, {
                 mapTypeControlOptions: {
