@@ -100,7 +100,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         let center = { lat: 0, lng: 0 },
             count = 0,
             randomLocation = this.locationService.getRandomKnownLocation(),
-            formatDecimal = (decimal) => new DecimalPipe('en_US').transform(decimal, this.decimalFormat),
+            formatDecimal = (decimal) => new DecimalPipe('en').transform(decimal, this.decimalFormat),
             bounds = new google.maps.LatLngBounds(),
             map = new google.maps.Map(mapEl, {
                 mapTypeControlOptions: {
