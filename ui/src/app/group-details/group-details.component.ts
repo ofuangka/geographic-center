@@ -17,8 +17,7 @@ import { Message } from '../domain/message';
 @Component({
     selector: 'app-group-details',
     templateUrl: 'group-details.component.html',
-    styleUrls: ['group-details.component.css'],
-    providers: [ChangeDetectorRef]
+    styleUrls: ['group-details.component.css']
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
     group: Group;
