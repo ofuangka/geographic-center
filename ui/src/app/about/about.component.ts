@@ -7,17 +7,6 @@ import { NotificationService } from '../services/notification.service';
     templateUrl: 'about.component.html',
     styleUrls: ['about.component.css']
 })
-export class AboutComponent implements OnInit {
-
-    @ViewChild(MdTabGroup)
-    tabGroup: MdTabGroup;
-
-    private startX: number;
-    private startY: number;
-    private startTime: number;
-
-    constructor() { }
-
-    ngOnInit() { }
+export class AboutComponent {
 
 }
