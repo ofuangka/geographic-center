@@ -40,55 +40,58 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
         let groupId = this.route.snapshot.params['groupId'];
 
-        this.groupService.read(groupId).then(group => this.group = group, this.handleGroupFailure.bind(this));
-
-        this.memberService.list(groupId).then(members => {
-            let thirtySeconds = 30000;
-
-            /* all members should be enabled initially */
-            members.forEach(member => {
-                this.enabledMembers[member.id] = true;
-            });
-
-            this.members = members.sort(function (a, b) { return b.lastUpdatedTs - a.lastUpdatedTs; });
-
-            this.drawMap();
-
-            this.isSendingLocation = true;
-            this.isLoading = false;
-
-            /* set up the websocket */
-            this.messageConnection = new ReconnectingWebSocket('wss://geographic-center-ws.herokuapp.com');
-            this.messageConnection.onmessage = this.handleMessage.bind(this);
-            this.ping = Observable.interval(thirtySeconds).subscribe(count => this.messageConnection.send('"ping"'));
-
-            /* add self if not a member */
-            this.userService.read().then(user => {
-                this.self = user;
-                let isMember = false;
-                for (let i = 0, len = this.members.length; i < len; i++) {
-                    if (this.self.id === this.members[i].userId) {
-                        isMember = true;
-                        break;
-                    }
-                }
-                if (!isMember) {
-                    this.sendLocation();
-                } else {
-                    this.isSendingLocation = false;
-                }
-            }, () => {
-                this.handleUserInfoFailure();
-                this.isSendingLocation = false;
-            });
+        this.groupService.read(groupId).then(group => {
+            this.group = group;
             
-            this.resizeEventListener = this.handleResize.bind(this);
-            window.addEventListener('resize', this.resizeEventListener);
+            this.memberService.list(groupId).then(members => {
+                let thirtySeconds = 30000;
 
-        }, () => {
-            this.handleMemberFailure();
-            this.isLoading = false;
-        });
+                /* all members should be enabled initially */
+                members.forEach(member => {
+                    this.enabledMembers[member.id] = true;
+                });
+
+                this.members = members.sort(function (a, b) { return b.lastUpdatedTs - a.lastUpdatedTs; });
+
+                this.drawMap();
+
+                this.isSendingLocation = true;
+                this.isLoading = false;
+
+                /* set up the websocket */
+                this.messageConnection = new ReconnectingWebSocket('wss://geographic-center-ws.herokuapp.com');
+                this.messageConnection.onmessage = this.handleMessage.bind(this);
+                this.ping = Observable.interval(thirtySeconds).subscribe(count => this.messageConnection.send('"ping"'));
+
+                /* add self if not a member */
+                this.userService.read().then(user => {
+                    this.self = user;
+                    let isMember = false;
+                    for (let i = 0, len = this.members.length; i < len; i++) {
+                        if (this.self.id === this.members[i].userId) {
+                            isMember = true;
+                            break;
+                        }
+                    }
+                    if (!isMember) {
+                        this.sendLocation();
+                    } else {
+                        this.isSendingLocation = false;
+                    }
+                }, () => {
+                    this.handleUserInfoFailure();
+                    this.isSendingLocation = false;
+                });
+                
+                this.resizeEventListener = this.handleResize.bind(this);
+                window.addEventListener('resize', this.resizeEventListener);
+
+            }, () => {
+                this.handleMemberFailure();
+                this.isLoading = false;
+            });
+        }, this.handleGroupFailure.bind(this));
+
     }
     drawMap() {
         let mapEl = document.getElementById('map');

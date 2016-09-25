@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.codec.binary.StringUtils;
 
+import ofuangka.geographiccenter.api.dao.GroupDao;
 import ofuangka.geographiccenter.api.dao.MemberDao;
 import ofuangka.geographiccenter.api.domain.Member;
 import ofuangka.geographiccenter.api.security.SecurityService;
@@ -34,6 +35,9 @@ public class MemberCollectionResource {
 
 	@Inject
 	private SecurityService securityService;
+	
+	@Inject
+	private GroupDao groupDao;
 
 	@GET
 	public List<Member> list(@QueryParam("gid") String groupId) {
@@ -43,24 +47,31 @@ public class MemberCollectionResource {
 	@POST
 	public Member create(@Valid Member member) {
 		String groupId = member.getGroupId();
-		String userId = securityService.getUserId();
-		String username = securityService.getUsername();
-		Date now = Calendar.getInstance().getTime();
-
-		/* a member can only appear in a group once */
-		Member existingMember = getMemberWithUserId(userId, groupId);
-		if (existingMember == null) {
-			member.setUserId(userId);
-			member.setUsername(username);
-			member.setGroupId(groupId);
-			member.setLastUpdatedTs(now);
-			return memberDao.create(member);
+		
+		/* only add members to groups that exist */
+		if (groupDao.get(groupId) != null) {
+			
+			String userId = securityService.getUserId();
+			String username = securityService.getUsername();
+			Date now = Calendar.getInstance().getTime();
+	
+			/* a member can only appear in a group once */
+			Member existingMember = getMemberWithUserId(userId, groupId);
+			if (existingMember == null) {
+				member.setUserId(userId);
+				member.setUsername(username);
+				member.setGroupId(groupId);
+				member.setLastUpdatedTs(now);
+				return memberDao.create(member);
+			} else {
+				existingMember.setUsername(username);
+				existingMember.setLat(member.getLat());
+				existingMember.setLng(member.getLng());
+				existingMember.setLastUpdatedTs(now);
+				return memberDao.update(existingMember);
+			}
 		} else {
-			existingMember.setUsername(username);
-			existingMember.setLat(member.getLat());
-			existingMember.setLng(member.getLng());
-			existingMember.setLastUpdatedTs(now);
-			return memberDao.update(existingMember);
+			throw new SecurityException("Group does not exist");
 		}
 	}
 
