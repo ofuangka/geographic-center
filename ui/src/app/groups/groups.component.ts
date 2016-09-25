@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupService } from '../services/group.service';
-import { Group } from '../domain/group';
+import { Group, Member } from '../domain';
 import { NotificationService } from '../services/notification.service';
 import { MemberService } from '../services/member.service';
-import { Member } from '../domain/member';
 import { LocationService } from '../services/location.service';
 
 @Component({

@@ -1,18 +1,14 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Member } from '../domain/member';
+import { Member, Group, User, Location, Message } from '../domain';
 import { DecimalPipe } from '@angular/common';
-import { Group } from '../domain/group';
 import { GroupService } from '../services/group.service';
 import { ActivatedRoute } from '@angular/router';
 import { MemberService } from '../services/member.service';
 import { LocationService } from '../services/location.service';
 import { UserService } from '../services/user.service';
-import { User } from '../domain/user';
 import { NotificationService } from '../services/notification.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ReconnectingWebSocket } from '../support/reconnecting-websocket';
-import { Location } from '../domain/location';
-import { Message } from '../domain/message'; 
 
 @Component({
     selector: 'app-group-details',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../domain/user';
+import { User } from '../domain';
 import { Http } from '@angular/http';
 import '../rxjs-operations';
 

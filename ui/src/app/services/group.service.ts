@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Group } from '../domain/group';
+import { Group } from '../domain';
 import { Http, Headers } from '@angular/http';
 import '../rxjs-operations';
 

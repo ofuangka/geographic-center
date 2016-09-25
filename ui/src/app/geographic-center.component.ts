@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdIconRegistry } from '@angular2-material/icon';
 import { MdInput } from '@angular2-material/input';
 import { UserService } from './services/user.service';
-import { User } from './domain/user';
+import { User } from './domain';
 import { BrowserService } from './services/browser.service';
 import { GroupService } from './services/group.service';
 import { Observer } from './support/observer';
