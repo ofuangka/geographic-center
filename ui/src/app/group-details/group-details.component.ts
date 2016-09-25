@@ -219,8 +219,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.drawMap();
     }
     ngOnDestroy() {
-        if (this.ping) { this.ping.unsubscribe(); };
-        if (this.resizeEventListener) { window.removeEventListener('resize', this.resizeEventListener); };
+        if (this.ping) { this.ping.unsubscribe(); }
+        if (this.resizeEventListener) { window.removeEventListener('resize', this.resizeEventListener); }
     }
     handleWsSendError(error) {
         this.notificationService.notify(`Error: WebSocket send failure - ${error.message}`)
