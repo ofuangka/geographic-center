@@ -1,9 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { GroupService } from '../services/group.service';
 import { Group, Member } from '../domain';
-import { NotificationService } from '../services/notification.service';
-import { MemberService } from '../services/member.service';
-import { LocationService } from '../services/location.service';
+import { NotificationService, GroupService, MemberService, LocationService } from '../services';
 
 @Component({
     selector: 'app-groups',
@@ -28,10 +25,10 @@ export class GroupsComponent implements OnInit, OnDestroy {
             this.groups = groups.sort(function comparator(a, b) { return b.createdTs - a.createdTs });
             if (this.groups.length > 0) {
                 this.memberService.list(this.groups[0].id).then((members) => {
-                    this.firstMembers = members; 
-                    this.drawMap(); 
+                    this.firstMembers = members;
+                    this.drawMap();
                     this.resizeEventListener = this.handleResize.bind(this);
-                    window.addEventListener('resize', this.resizeEventListener) 
+                    window.addEventListener('resize', this.resizeEventListener)
                 }, this.handleMembersFailure.bind(this));
             }
             this.isLoading = false;

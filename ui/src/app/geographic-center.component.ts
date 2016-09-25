@@ -1,15 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdIconRegistry } from '@angular2-material/icon';
 import { MdInput } from '@angular2-material/input';
-import { UserService } from './services/user.service';
+import { UserService, BrowserService, GroupService, NotificationService, NameService, MemberService, LocationService } from './services';
 import { User } from './domain';
-import { BrowserService } from './services/browser.service';
-import { GroupService } from './services/group.service';
 import { Observer } from './support/observer';
-import { NotificationService } from './services/notification.service';
-import { NameService } from './services/name.service';
-import { MemberService } from './services/member.service';
-import { LocationService } from './services/location.service';
 import { Router } from '@angular/router';
 
 @Component({

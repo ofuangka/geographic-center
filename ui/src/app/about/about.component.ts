@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdTabGroup } from '@angular2-material/tabs';
-import { NotificationService } from '../services/notification.service';
+import { NotificationService } from '../services';
 
 @Component({
     selector: 'app-about',

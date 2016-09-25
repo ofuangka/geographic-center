@@ -1,12 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Member, Group, User, Location, Message } from '../domain';
 import { DecimalPipe } from '@angular/common';
-import { GroupService } from '../services/group.service';
+import { GroupService, MemberService, LocationService, UserService, NotificationService } from '../services';
 import { ActivatedRoute } from '@angular/router';
-import { MemberService } from '../services/member.service';
-import { LocationService } from '../services/location.service';
-import { UserService } from '../services/user.service';
-import { NotificationService } from '../services/notification.service';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ReconnectingWebSocket } from '../support/reconnecting-websocket';
 
@@ -42,7 +38,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
         this.groupService.read(groupId).then(group => {
             this.group = group;
-            
+
             this.memberService.list(groupId).then(members => {
                 let thirtySeconds = 30000;
 
@@ -82,7 +78,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                     this.handleUserInfoFailure();
                     this.isSendingLocation = false;
                 });
-                
+
                 this.resizeEventListener = this.handleResize.bind(this);
                 window.addEventListener('resize', this.resizeEventListener);
 
@@ -194,7 +190,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         let sequence = message.sequence;
         let newMember = message.member;
 
-        if (typeof(this.lastSequenceSeen) === 'undefined') {
+        if (typeof (this.lastSequenceSeen) === 'undefined') {
             this.lastSequenceSeen = sequence;
         } else if (sequence - this.lastSequenceSeen > 1) {
             this.notificationService.notify('Warning: Message loss detected. Refresh the page');
