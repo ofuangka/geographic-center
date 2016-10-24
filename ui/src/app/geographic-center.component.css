@@ -24,15 +24,12 @@ md-sidenav-layout {
 
 .name-container {
   display: flex;
+  margin-bottom: 16px;
 }
 
 .name-container > md-input {
   flex-grow: 1;
   margin-right: 8px;
-}
-
-.hint-container {
-  margin-bottom: 16px;
 }
 
 .public-container {

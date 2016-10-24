@@ -1,51 +1,49 @@
 <md-sidenav-layout fullscreen>
-    <md-sidenav #sidenav>
-        <md-nav-list>
-            <a *ngFor="let view of views" md-list-item (click)="showView(view.path); formShowing = false; sidenav.close()">
-                <md-icon md-list-icon>{{view.icon}}</md-icon>
-                <span md-line>{{view.name}}</span>
-                <span md-line class="secondary">{{view.description}}</span>
-            </a>
-            <md-divider></md-divider>
-            <a md-list-item [href]="logoutUrl">
-                <md-icon md-list-icon>power_settings_new</md-icon>
-                <span md-line>Sign out</span>
-                <span md-line class="secondary" *ngIf="!username">...</span>
-                <span md-line class="secondary" *ngIf="username">Signed in as {{username}}</span>
-            </a>
-        </md-nav-list>
-    </md-sidenav>
-    <md-toolbar color="primary">
-        <button md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
-        <button md-fab (click)="formShowing = !formShowing">
+	<md-sidenav #sidenav>
+		<md-nav-list>
+			<a *ngFor="let view of views" md-list-item (click)="showView(view.path); formShowing = false; sidenav.close()">
+				<md-icon md-list-icon>{{view.icon}}</md-icon>
+				<span md-line>{{view.name}}</span>
+				<span md-line class="secondary">{{view.description}}</span>
+			</a>
+			<md-divider></md-divider>
+			<a md-list-item [href]="logoutUrl">
+				<md-icon md-list-icon>power_settings_new</md-icon>
+				<span md-line>Sign out</span>
+				<span md-line class="secondary" *ngIf="!username">...</span>
+				<span md-line class="secondary" *ngIf="username">Signed in as {{username}}</span>
+			</a>
+		</md-nav-list>
+	</md-sidenav>
+	<md-toolbar color="primary">
+		<button md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
+		<button md-fab (click)="formShowing = !formShowing">
             <md-icon *ngIf="!formShowing">add</md-icon>
             <md-icon *ngIf="formShowing">remove</md-icon>
         </button>
-    </md-toolbar>
-    <md-toolbar color="warn" *ngIf="notification">
-        <button md-icon-button (click)="dismissNotification()"><md-icon>clear</md-icon></button>
-        <small>{{notification}}</small>
-    </md-toolbar>
-    <div class="form" *ngIf="formShowing">
-        <md-card>
-            <md-card-title>Create a new group</md-card-title>
-            <md-card-content>
-                <div class="name-container">
-                    <md-input placeholder="Name" #newGroupName maxLength="50" required="true"></md-input>
-                    <button md-mini-fab (click)="generateRandom()"><md-icon>casino</md-icon></button>
-                </div>
-                <div class="hint-container">
-                    <md-hint>{{newGroupName.characterCount}} / 50 characters</md-hint>
-                </div>
-                <div class="public-container">
-                    <md-checkbox #newGroupIsPublic>Make public</md-checkbox>
-                </div>
-                <div class="actions-container">
-                    <button md-raised-button color="accent" (click)="createGroup(newGroupName.value, newGroupIsPublic.checked)"
-                        [disabled]="newGroupName.empty || isCreatingGroup">{{isCreatingGroup ? 'Saving...' : 'Save'}}</button>
-                </div>
-            </md-card-content>
-        </md-card>
-    </div>
-    <router-outlet></router-outlet>
+	</md-toolbar>
+	<md-toolbar color="warn" *ngIf="notification">
+		<button md-icon-button (click)="dismissNotification()"><md-icon>clear</md-icon></button>
+		<small>{{notification}}</small>
+	</md-toolbar>
+	<div class="form" *ngIf="formShowing">
+		<md-card>
+			<md-card-title>Create a new group</md-card-title>
+			<md-card-content>
+				<div class="name-container">
+					<md-input placeholder="Name" #newGroupName maxLength="50" required="true">
+						<md-hint align="start">{{newGroupName.characterCount}} / 50 characters</md-hint>
+					</md-input>
+					<button md-mini-fab (click)="generateRandom()"><md-icon>casino</md-icon></button>
+				</div>
+				<div class="public-container">
+					<md-checkbox #newGroupIsPublic>Make public</md-checkbox>
+				</div>
+				<div class="actions-container">
+					<button md-raised-button color="accent" (click)="createGroup(newGroupName.value, newGroupIsPublic.checked)" [disabled]="newGroupName.empty || isCreatingGroup">{{isCreatingGroup ? 'Saving...' : 'Save'}}</button>
+				</div>
+			</md-card-content>
+		</md-card>
+	</div>
+	<router-outlet></router-outlet>
 </md-sidenav-layout>
