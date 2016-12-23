@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdIconRegistry } from '@angular2-material/icon';
-import { MdInput } from '@angular2-material/input';
+import { Component, OnInit } from '@angular/core';
+import { MdIconRegistry } from '@angular/material/icon';
 import { UserService, BrowserService, GroupService, NotificationService, NameService, MemberService, LocationService } from './services';
 import { User } from './domain';
 import { Observer } from './support/observer';
@@ -8,9 +7,9 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'geographic-center-app',
-    templateUrl: 'geographic-center.component.html',
+    templateUrl: './geographic-center.component.html',
     styleUrls: [
-        'geographic-center.component.css'
+        './geographic-center.component.css'
     ],
     providers: [
         MdIconRegistry,
@@ -34,8 +33,6 @@ export class GeographicCenterAppComponent implements OnInit, Observer {
     notification: string = '';
     logoutUrl: string;
 
-    @ViewChild(MdInput)
-    input: MdInput;
     constructor(private router: Router,
         private userService: UserService,
         private groupService: GroupService,
@@ -76,7 +73,7 @@ export class GeographicCenterAppComponent implements OnInit, Observer {
         this.notification = 'Error: Could not retrieve user data';
     }
     generateRandom() {
-        this.input.value = this.nameService.getRandom();
+        return this.nameService.getRandom();
     }
     dismissNotification() {
         this.notification = '';

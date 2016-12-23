@@ -4,8 +4,8 @@ import { NotificationService, GroupService, MemberService, LocationService } fro
 
 @Component({
     selector: 'app-groups',
-    templateUrl: 'groups.component.html',
-    styleUrls: ['groups.component.css']
+    templateUrl: './groups.component.html',
+    styleUrls: ['./groups.component.css']
 })
 export class GroupsComponent implements OnInit, OnDestroy {
     groups: Group[];

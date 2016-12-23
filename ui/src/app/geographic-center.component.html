@@ -31,10 +31,11 @@
 			<md-card-title>Create a new group</md-card-title>
 			<md-card-content>
 				<div class="name-container">
-					<md-input placeholder="Name" #newGroupName maxLength="50" required="true">
+					<md-input-container>
+						<input md-input placeholder="Name" #newGroupName maxLength="50" required="true" />
 						<md-hint align="start">{{newGroupName.characterCount}} / 50 characters</md-hint>
-					</md-input>
-					<button md-mini-fab (click)="generateRandom()"><md-icon>casino</md-icon></button>
+					</md-input-container>
+					<button md-mini-fab (click)="newGroupName.value = generateRandom()"><md-icon>casino</md-icon></button>
 				</div>
 				<div class="public-container">
 					<md-checkbox #newGroupIsPublic>Make public</md-checkbox>

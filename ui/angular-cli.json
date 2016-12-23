@@ -6,9 +6,10 @@
   "apps": [
     {
       "main": "main.ts",
+      "test": "test.ts",
       "tsconfig": "tsconfig.json",
       "mobile": false,
-      "assets": "assets",
+      "assets": ["assets"],
       "prefix": "app",
       "root": "src",
       "outDir": "../api/src/main/webapp/ui/",

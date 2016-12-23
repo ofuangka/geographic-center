@@ -1,5 +1,5 @@
 <div class="spinner-container" *ngIf="isLoading">
-    <md-spinner></md-spinner>
+    <md-progress-circle mode="indeterminate"></md-progress-circle>
 </div>
 <md-card *ngIf="!isLoading && (!groups || groups.length === 0)">
     <md-card-content>You currently have no groups :(</md-card-content>

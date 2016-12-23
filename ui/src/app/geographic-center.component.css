@@ -27,7 +27,7 @@ md-sidenav-layout {
   margin-bottom: 16px;
 }
 
-.name-container > md-input {
+.name-container > md-input-container {
   flex-grow: 1;
   margin-right: 8px;
 }

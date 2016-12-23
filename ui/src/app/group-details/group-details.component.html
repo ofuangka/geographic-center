@@ -6,7 +6,7 @@
     </md-card-title>
     <md-card-content>
         <div class="spinner-container" *ngIf="isLoading">
-            <md-spinner></md-spinner>
+            <md-progress-circle mode="indeterminate"></md-progress-circle>
         </div>
         <div id="map"></div>
         <div class="actions-container" *ngIf="!isLoading">
