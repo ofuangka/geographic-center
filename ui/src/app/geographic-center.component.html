@@ -17,7 +17,7 @@
 	</md-sidenav>
 	<md-toolbar color="primary">
 		<button md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
-		<button md-fab (click)="formShowing = !formShowing">
+		<button md-fab (click)="formShowing = !formShowing; newGroupName = ''">
             <md-icon *ngIf="!formShowing">add</md-icon>
             <md-icon *ngIf="formShowing">remove</md-icon>
         </button>
@@ -32,16 +32,16 @@
 			<md-card-content>
 				<div class="name-container">
 					<md-input-container>
-						<input md-input placeholder="Name" #newGroupName maxLength="50" required="true" />
-						<md-hint align="start">{{newGroupName.characterCount}} / 50 characters</md-hint>
+						<input md-input placeholder="Name" maxLength="50" required="true" [ngModel]="newGroupName" />
+						<md-hint align="start">{{newGroupName.length}} / 50 characters</md-hint>
 					</md-input-container>
-					<button md-mini-fab (click)="newGroupName.value = generateRandom()"><md-icon>casino</md-icon></button>
+					<button md-mini-fab (click)="newGroupName = generateRandom()"><md-icon>casino</md-icon></button>
 				</div>
 				<div class="public-container">
 					<md-checkbox #newGroupIsPublic>Make public</md-checkbox>
 				</div>
 				<div class="actions-container">
-					<button md-raised-button color="accent" (click)="createGroup(newGroupName.value, newGroupIsPublic.checked)" [disabled]="newGroupName.empty || isCreatingGroup">{{isCreatingGroup ? 'Saving...' : 'Save'}}</button>
+					<button md-raised-button color="accent" (click)="createGroup(newGroupName, newGroupIsPublic.checked)" [disabled]="newGroupName.length === 0 || isCreatingGroup">{{isCreatingGroup ? 'Saving...' : 'Save'}}</button>
 				</div>
 			</md-card-content>
 		</md-card>

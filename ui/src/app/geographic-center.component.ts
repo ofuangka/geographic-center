@@ -32,6 +32,7 @@ export class GeographicCenterAppComponent implements OnInit, Observer {
     isCreatingGroup = false;
     notification: string = '';
     logoutUrl: string;
+    newGroupName = '';
 
     constructor(private router: Router,
         private userService: UserService,
